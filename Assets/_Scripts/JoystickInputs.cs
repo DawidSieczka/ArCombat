@@ -1,24 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class PlayerInputs : MonoBehaviour
+public class JoystickInputs : Observerable
 {
-    private Joystick _joystick;
-    private JoyButton _joyButton;
     [HideInInspector] public float xAxis;
     [HideInInspector] public float yAxis;
+    
+    private Joystick _joystick;
 
     void Start()
     {
         _joystick = FindObjectOfType<Joystick>();
-        _joyButton = FindObjectOfType<JoyButton>();
     }
 
     void Update()
     {
         xAxis = _joystick.Horizontal; 
         yAxis = _joystick.Horizontal;
-
     }
 }

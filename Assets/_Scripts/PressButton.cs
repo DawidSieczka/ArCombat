@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class JoyButton : MonoBehaviour, IPointerUpHandler,IPointerDownHandler
+public abstract class PressButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    [HideInInspector] public bool Pressed;
+    protected bool Pressed;
 
     public void OnPointerUp(PointerEventData eventData)
     {

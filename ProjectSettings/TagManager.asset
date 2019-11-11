@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameManager
+  - PillarTag
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - 
   - Platform
-  - 
+  - Pillar
   - 
   - 
   - 
