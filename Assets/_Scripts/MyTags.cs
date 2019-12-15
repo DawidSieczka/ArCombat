@@ -1,5 +1,4 @@
-﻿public enum Tag
-{
+﻿public enum Tag{
     PillarTag,
     Player,
     GameManager,
