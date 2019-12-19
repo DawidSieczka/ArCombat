@@ -6,7 +6,7 @@ public class PlayerColliders : MonoBehaviour{
     [HideInInspector]
     public bool IsOnEdge;
     [HideInInspector]
-    public PlayerJump _playerJump;
+    PlayerJump _playerJump;
 
     RaycastHit _centerRay;
     int _layerMaskFillar = 1 << 9;

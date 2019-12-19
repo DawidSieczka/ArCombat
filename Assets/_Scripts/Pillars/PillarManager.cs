@@ -4,27 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PillarManager : MonoBehaviour{
-    [HideInInspector]
-    public bool isAngleForLeftRot;
-    [HideInInspector]
-    public bool isAngleForRightRot;
-    PillarRotationValidator _correctness;
-    PillarDetector _pillarDetector;
-    Vector3 _startPillarRotationPosition;
-    Vector3 _endPillarRotationPosition;
-    RotateButton _rotateButton;
-    PlayerColliders _playerColliders;
-    Vector3 DirectionOfRotate;
 
     [HideInInspector]
     public float AngleRotate;
     [HideInInspector]
-    public bool EnabledRotation;
+    public bool EnabledRotation { get; set; }
+    [HideInInspector]
+    public bool IsAngleForLeftRot;
+    [HideInInspector]
+    public bool IsAngleForRightRot;
 
-    GameObject _TheNearestPillar;
+    Vector3 _startPillarRotationPosition;
+    Vector3 _endPillarRotationPosition;
+    Vector3 _directionOfRotate;
+    RotateButton _rotateButton;
+    GameObject _theNearestPillar;
+    PillarDetector _pillarDetector;
+    PlayerColliders _playerColliders;
 
     void Start(){
-        _correctness = FindObjectOfType<PillarRotationValidator>();
         _pillarDetector = FindObjectOfType<PillarDetector>();
         _rotateButton = FindObjectOfType<RotateButton>();
         _playerColliders = FindObjectOfType<PlayerColliders>();
@@ -40,27 +38,27 @@ public class PillarManager : MonoBehaviour{
     void InvokeRotation(object s,EventArgs e){
         var isReadyToRotate = (_rotateButton.Pressed && !EnabledRotation && _playerColliders.IsOnEdge);
         if (isReadyToRotate){
-            _TheNearestPillar = _pillarDetector.ChooseTheNearestPillar();
-            _startPillarRotationPosition = _TheNearestPillar.transform.eulerAngles;
+            _theNearestPillar = _pillarDetector.GetTheNearestPillar();
+            _startPillarRotationPosition = _theNearestPillar.transform.eulerAngles;
             SetAngleToRotate();
             Debug.Log($"AngleRotate:{AngleRotate}");
-            var ValueOfAngle = Vector3.up * AngleRotate; //tutaj jest błąd! !! !!!
+            var ValueOfAngle = Vector3.up * AngleRotate;
             _endPillarRotationPosition = _startPillarRotationPosition + ValueOfAngle;
-            Debug.Log($"wartosc obrotu to: {ValueOfAngle}");
+            Debug.Log($"Rotate value is: {ValueOfAngle}");
             ValidateValueOfRotation();
             EnabledRotation = true;
-            Debug.Log($"My the nearest pillar is: {_TheNearestPillar.gameObject.name}");
+            Debug.Log($"My the nearest pillar is: {_theNearestPillar.gameObject.name}");
             Debug.Log($"Rotation works");
         }
     }
 
     void RotatePillar(){
-        if (Math.Abs(_endPillarRotationPosition.y - _TheNearestPillar.transform.eulerAngles.y) < 1f){
-            _TheNearestPillar.transform.eulerAngles = _endPillarRotationPosition;
+        if (Math.Abs(_endPillarRotationPosition.y - _theNearestPillar.transform.eulerAngles.y) < 1f){
+            _theNearestPillar.transform.eulerAngles = _endPillarRotationPosition;
             EnabledRotation = false;
         }
         else{
-            _TheNearestPillar.transform.Rotate(DirectionOfRotate * Time.deltaTime, Space.Self) ;
+            _theNearestPillar.transform.Rotate(_directionOfRotate * Time.deltaTime, Space.Self) ;
         }
     }
     
@@ -73,12 +71,12 @@ public class PillarManager : MonoBehaviour{
         }
     }
     public void SetAngleToRotate(){
-        if (isAngleForLeftRot && !isAngleForRightRot){
-            DirectionOfRotate = new Vector3(0, 0, 50);
+        if (IsAngleForLeftRot && !IsAngleForRightRot){
+            _directionOfRotate = new Vector3(0, 0, 50);
             AngleRotate = -90;
-        }else if (!isAngleForLeftRot && isAngleForRightRot){
+        }else if (!IsAngleForLeftRot && IsAngleForRightRot){
             AngleRotate = 90;
-            DirectionOfRotate = new Vector3(0,0,-50);
+            _directionOfRotate = new Vector3(0,0,-50);
         }
         else
         {

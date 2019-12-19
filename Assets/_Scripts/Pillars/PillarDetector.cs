@@ -5,7 +5,7 @@ using UnityEngine;
 public class PillarDetector : MonoBehaviour{
    
     GameObject[] _pillars;
-    GameObject TheNearestPillar;
+    GameObject _theNearestPillar;
     GameObject _player;
 
     void Start(){
@@ -13,7 +13,7 @@ public class PillarDetector : MonoBehaviour{
         _player = GameObject.FindGameObjectWithTag(Tag.Player.ToString());
     }
 
-    public GameObject ChooseTheNearestPillar(){
+    public GameObject GetTheNearestPillar(){
         var previousDistance = float.MaxValue;
 
         //Amount of Pillars is about 10-30 (not too much)
@@ -22,9 +22,9 @@ public class PillarDetector : MonoBehaviour{
 
             if (distPlayerPillar < previousDistance){
                 previousDistance = distPlayerPillar;
-                TheNearestPillar = pillar;
+                _theNearestPillar = pillar;
             }
         }
-        return TheNearestPillar;
+        return _theNearestPillar;
     }
 }

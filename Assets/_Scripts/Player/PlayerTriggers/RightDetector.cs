@@ -5,6 +5,6 @@ using UnityEngine;
 public class RightDetector : TriggerSideDetector{
    
     void Update(){
-        _pillarManager.isAngleForRightRot = isSetAngleOfRotate;
+        _pillarManager.IsAngleForRightRot = isSetAngleOfRotate;
     }
 }
