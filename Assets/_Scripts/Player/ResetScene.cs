@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
-public class PlayerPositionSetter : MonoBehaviour{
+public class ResetScene : MonoBehaviour{
     ShootButton _shootButton;
     Rigidbody _rb;
+    public GameObject ObjectOfZeroPosition;
 
     void Start(){
         _shootButton = FindObjectOfType<ShootButton>();
@@ -14,7 +16,10 @@ public class PlayerPositionSetter : MonoBehaviour{
     }
 
     void ResetPosition(object s,EventArgs e){
-        transform.localPosition = new Vector3(0.359f, 0.1384f, 1.049f);
+        transform.localPosition = ObjectOfZeroPosition.transform.position;
         _rb.velocity = Vector3.zero;
+
+        Scene scene = SceneManager.GetActiveScene(); 
+        SceneManager.LoadScene(scene.name);
     }
 }

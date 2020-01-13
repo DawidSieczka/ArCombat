@@ -23,16 +23,15 @@ public class PillarManager : MonoBehaviour{
     PlayerColliders _playerColliders;
 
     void Start(){
-        _pillarDetector = FindObjectOfType<PillarDetector>();
+        _pillarDetector = new PillarDetector();
         _rotateButton = FindObjectOfType<RotateButton>();
         _playerColliders = FindObjectOfType<PlayerColliders>();
         _rotateButton.OnRotated += InvokeRotation;
     }
 
     void Update(){
-        if (EnabledRotation){
+        if (EnabledRotation)
             RotatePillar();
-        }
     }
 
     void InvokeRotation(object s,EventArgs e){
@@ -53,7 +52,8 @@ public class PillarManager : MonoBehaviour{
     }
 
     void RotatePillar(){
-        if (Math.Abs(_endPillarRotationPosition.y - _theNearestPillar.transform.eulerAngles.y) < 1f){
+        Debug.Log($"Angle of pillar: {_theNearestPillar.transform.eulerAngles.y}");
+        if (Math.Abs(_endPillarRotationPosition.y - _theNearestPillar.transform.eulerAngles.y) < 3f){
             _theNearestPillar.transform.eulerAngles = _endPillarRotationPosition;
             EnabledRotation = false;
         }

@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PillarDetector : MonoBehaviour{
+public class PillarDetector {
    
     GameObject[] _pillars;
     GameObject _theNearestPillar;
     GameObject _player;
 
-    void Start(){
+    void InitObjects(){
         _pillars = GameObject.FindGameObjectsWithTag(Tag.PillarTag.ToString());
         _player = GameObject.FindGameObjectWithTag(Tag.Player.ToString());
     }
 
     public GameObject GetTheNearestPillar(){
+        InitObjects();
         var previousDistance = float.MaxValue;
 
         //Amount of Pillars is about 10-30 (not too much)

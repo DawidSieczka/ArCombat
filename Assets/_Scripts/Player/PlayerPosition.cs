@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerPosition : MonoBehaviour {
     
     PillarManager _pillarManager;
     PillarDetector _pillarDetector;
-    
+
     void Awake() {
         _pillarManager = FindObjectOfType<PillarManager>();
-        _pillarDetector = FindObjectOfType<PillarDetector>();
+        _pillarDetector = new PillarDetector();
     }
 
     void Update() {
@@ -18,7 +17,7 @@ public class PlayerPosition : MonoBehaviour {
         SwitchPlayerParent();
     }
 
-    private void SwitchPlayerParent() {
+    void SwitchPlayerParent() {
         if (_pillarManager.EnabledRotation)
             StopPlayerPosition();
         else 
