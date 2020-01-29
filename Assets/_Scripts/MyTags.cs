@@ -5,6 +5,5 @@
     RotateLeft,
     RotateRight,
     Platform,
-    hook,
-
+    hook
 }

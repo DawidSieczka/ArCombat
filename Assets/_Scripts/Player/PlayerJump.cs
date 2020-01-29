@@ -9,21 +9,24 @@ public class PlayerJump : MonoBehaviour{
     Rigidbody _rb;
     JumpButton _jumpButton;
     PlayerColliders _playerColliders;
+    TestableInputsScript _testableInputsScript;
 
     float _fallMultiplier = 2f;
     float _lowJumpMultiplier = 1.3f;
-    float _jumpForce = 3f;
+    float _jumpForce = 5f;
     bool _isReadyToJump = true;
     
     void Start(){
         _rb = GetComponent<Rigidbody>();
         _jumpButton = FindObjectOfType<JumpButton>();
         _playerColliders = GetComponent<PlayerColliders>();
-        _jumpButton.OnJumped += Jump;
+        //_testableInputsScript = FindObjectOfType<TestableInputsScript>();
+        //_jumpButton.OnJumped += Jump;  //used from controller - commented for tests
+        //_testableInputsScript.OnJumped += Jump;
     }
 
     void Update(){
-        FallingController();
+       // FallingController();
     }
 
 
@@ -36,11 +39,10 @@ public class PlayerJump : MonoBehaviour{
         }
     }
 
-    //TODO Trzeba bedzie naprawic Skok - musi sie wykonywac razem z Time.deltaTime i musi byc bardziej 'rensposywny'
-    void Jump(object s, EventArgs e){
-        if (_jumpButton.Jump && IsColliding() && _isReadyToJump){
+    public void Jump(){
+        if (/*_jumpButton.Jump &&*/  IsColliding() && _isReadyToJump){
             _isReadyToJump = false;
-            _rb.AddForce(Vector3.up * _jumpForce /** Time.deltaTime*/, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
             StartCoroutine(JumpCoolDown());
         }
     }
