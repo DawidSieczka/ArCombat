@@ -5,17 +5,17 @@ using System;
 using UnityEngine.SceneManagement;
 
 public class ResetScene : MonoBehaviour{
-    ShootButton _shootButton;
+    ButtonEvent _buttonEvent;
     Rigidbody _rb;
     public GameObject ObjectOfZeroPosition;
 
     void Start(){
-        _shootButton = FindObjectOfType<ShootButton>();
+        _buttonEvent = FindObjectOfType<ButtonEvent>();
         _rb = GetComponent<Rigidbody>();
-        _shootButton.OnShooted += ResetPosition;
+        _buttonEvent.OnRestarted.AddListener(ResetPosition);
     }
 
-    void ResetPosition(object s,EventArgs e){
+    void ResetPosition(){
         transform.localPosition = ObjectOfZeroPosition.transform.position;
         _rb.velocity = Vector3.zero;
 

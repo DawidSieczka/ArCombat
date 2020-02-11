@@ -7,35 +7,25 @@ public class PlayerHorizontalMovement : MonoBehaviour{
 
     public bool isDebug;
 
-    JoystickInputs _joystickInputs { get; set; }
     Rigidbody _rb { get; set; }
     float _speed { get; set; } =  1.2f;
-
-    void Awake(){
-        _joystickInputs = FindObjectOfType<JoystickInputs>();
+    ButtonEvent _buttonEvent;
+    public static int direction;
+    void Start(){
         _rb = GetComponent<Rigidbody>();
+        _buttonEvent = FindObjectOfType<ButtonEvent>();
+
     }
 
-    void Update()
-    {
+    void Update(){
         if (isDebug)
-        {
             DebugMoveComp();
-        }
         else
-        {
-            MobileMovement();
-        }
-
-        //transform.InverseTransformDirection(transform.position += Vector3.right * _joystickInputs.xAxis * Time.deltaTime * _speed);
+            MobileMovement(direction);
     }
 
-    private void MobileMovement(){
-        bool IsJoystickMoved = Mathf.Abs(_joystickInputs.xAxis) >= 0.2f;
-        if (IsJoystickMoved)
-            transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * _joystickInputs.xAxis * _speed);
-
-        Debug.Log($"X value of Joystick is: {_joystickInputs.xAxis}");
+    void MobileMovement(int direction){
+            transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * direction * _speed);
     }
 
     void DebugMoveComp(){

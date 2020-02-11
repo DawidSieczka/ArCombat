@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,9 +6,8 @@ using UnityEngine;
 public class PlayerJump : MonoBehaviour{
 
     Rigidbody _rb;
-    JumpButton _jumpButton;
     PlayerColliders _playerColliders;
-    TestableInputsScript _testableInputsScript;
+    ButtonEvent newJumpButton;
 
     float _fallMultiplier = 2f;
     float _lowJumpMultiplier = 1.3f;
@@ -18,11 +16,9 @@ public class PlayerJump : MonoBehaviour{
     
     void Start(){
         _rb = GetComponent<Rigidbody>();
-        _jumpButton = FindObjectOfType<JumpButton>();
         _playerColliders = GetComponent<PlayerColliders>();
-        //_testableInputsScript = FindObjectOfType<TestableInputsScript>();
-        //_jumpButton.OnJumped += Jump;  //used from controller - commented for tests
-        //_testableInputsScript.OnJumped += Jump;
+        newJumpButton = FindObjectOfType<ButtonEvent>();
+        newJumpButton.OnJumped.AddListener(Jump);
     }
 
     void Update(){
@@ -39,8 +35,9 @@ public class PlayerJump : MonoBehaviour{
         }
     }
 
-    public void Jump(){
-        if (/*_jumpButton.Jump &&*/  IsColliding() && _isReadyToJump){
+    public void Jump()
+    {
+        if (IsColliding() && _isReadyToJump){
             _isReadyToJump = false;
             _rb.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
             StartCoroutine(JumpCoolDown());
@@ -51,7 +48,7 @@ public class PlayerJump : MonoBehaviour{
         if (_rb.velocity.y < 0){
             _rb.velocity += Vector3.up * Physics.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
         }
-        else if (_rb.velocity.y > 0 && !_jumpButton.Jump){
+        else if (_rb.velocity.y > 0){
             _rb.velocity += Vector3.up * Physics.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }

@@ -17,16 +17,15 @@ public class PillarManager : MonoBehaviour{
     Vector3 _startPillarRotationPosition;
     Vector3 _endPillarRotationPosition;
     Vector3 _directionOfRotate;
-    RotateButton _rotateButton;
     GameObject _theNearestPillar;
     PillarDetector _pillarDetector;
     PlayerColliders _playerColliders;
-
+    ButtonEvent _buttonEvent;
     void Start(){
         _pillarDetector = new PillarDetector();
-        _rotateButton = FindObjectOfType<RotateButton>();
         _playerColliders = FindObjectOfType<PlayerColliders>();
-        _rotateButton.OnRotated += InvokeRotation;
+        _buttonEvent = FindObjectOfType<ButtonEvent>();
+        _buttonEvent.OnRotated.AddListener(InvokeRotation);
     }
 
     void Update(){
@@ -34,8 +33,8 @@ public class PillarManager : MonoBehaviour{
             RotatePillar();
     }
 
-    void InvokeRotation(object s,EventArgs e){
-        var isReadyToRotate = (_rotateButton.Pressed && !EnabledRotation && _playerColliders.IsOnEdge);
+    void InvokeRotation(){
+        var isReadyToRotate = (!EnabledRotation && _playerColliders.IsOnEdge);
         if (isReadyToRotate){
             _theNearestPillar = _pillarDetector.GetTheNearestPillar();
             _startPillarRotationPosition = _theNearestPillar.transform.eulerAngles;
