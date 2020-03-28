@@ -3031,6 +3031,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2058051972924716006, guid: 7495ce4e0c663464792f9ea6040d8b0d,
+        type: 3}
+      propertyPath: isDebug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2058051972924716024, guid: 7495ce4e0c663464792f9ea6040d8b0d,
         type: 3}
       propertyPath: ObjectOfZeroPosition
