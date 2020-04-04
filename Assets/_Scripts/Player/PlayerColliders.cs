@@ -39,7 +39,6 @@ public class PlayerColliders : MonoBehaviour{
         else{
             IsOnEdge = false;
         }
-        Debug.Log($"Is on edge? : {IsOnEdge}");
     }
 
     void CheckPlayerOnPlatform(){

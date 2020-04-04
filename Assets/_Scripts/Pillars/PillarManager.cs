@@ -25,7 +25,7 @@ public class PillarManager : MonoBehaviour{
         _pillarDetector = new PillarDetector();
         _playerColliders = FindObjectOfType<PlayerColliders>();
         _buttonEvent = FindObjectOfType<ButtonEvent>();
-        _buttonEvent.OnRotated.AddListener(InvokeRotation);
+        //_buttonEvent.OnRotated.AddListener(InvokeRotation);
     }
 
     void Update(){

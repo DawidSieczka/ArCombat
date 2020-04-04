@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerRotation : MonoBehaviour
 {
@@ -10,12 +12,69 @@ public class PlayerRotation : MonoBehaviour
     //3. tzn. postac zwrócona twarzą do północy porusza się po osi wschód zachód i kamera jest umieszczona na kierunku północnym dla postaci.
     // Teraz, gdy postać porusza się na wschód gdy naciskamy prawy klawisz. Kamera przechodzi na południe i gdy naciskamy prawy klawisz postać porusza się na zachód. 
     // powoduje to że postać porusza się względem przesunięcia joysticka czy też wciśnięcia L/P inputu
-
+    
+    PlayerPositionCorrector _posCorrector;
+    ButtonEvent _buttonEvent;
+    bool shouldRotate;
+    float startRotationPos;
+    float endRotationPos;
+    public float rotationSpeed;
     void Start(){
-        
+        _posCorrector = GetComponent<PlayerPositionCorrector>();
+        _buttonEvent = FindObjectOfType<ButtonEvent>();
+        _buttonEvent.OnRotated.AddListener(InvokeRotation);
     }
+    
 
     void Update(){
+        if(shouldRotate)
+        {
+            transform.Rotate(Vector3.up, rotationSpeed*Time.deltaTime);
+            //Debug.Log($"Y euler: {transform.eulerAngles.y}");
+
+            if (Math.Abs(transform.eulerAngles.y - endRotationPos) < 3f)
+            {
+                shouldRotate = false;
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, endRotationPos, transform.eulerAngles.z);
+            }
+        }
+    }
+    void InvokeRotation()
+    {
+        shouldRotate = true;
+        startRotationPos = transform.rotation.eulerAngles.y;
+        var targetAngle = (float)startRotationPos + 90;
+        endRotationPos = RoundValueToCorrectAngle(targetAngle);
+        print(endRotationPos);
+
+        _posCorrector.CorrectPosition();
         
+    }
+    public float RoundValueToCorrectAngle(float inputValue)
+    {
+        List<float> CorrectValues = new List<float> { 0, 90, 180, 270, 360};
+        print(inputValue);
+        float roundedAngle = 0;
+
+        if (inputValue >= 360)
+            return roundedAngle;
+
+        float theSmallestDifeerence = float.MaxValue;
+        foreach (var correctValue in CorrectValues)
+        {
+            var difference = Math.Abs(inputValue - correctValue);
+            Debug.Log(difference);
+
+            bool isTheSmallestDifference = (difference <= theSmallestDifeerence);
+            if (isTheSmallestDifference)
+            {
+                theSmallestDifeerence = difference;
+                roundedAngle = correctValue;
+            }
+        }
+
+        return roundedAngle;
+
+
     }
 }

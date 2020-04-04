@@ -9,9 +9,9 @@ public class PlayerJump : MonoBehaviour{
     PlayerColliders _playerColliders;
     ButtonEvent newJumpButton;
 
-    float _fallMultiplier = 2f;
-    float _lowJumpMultiplier = 1.3f;
-    float _jumpForce = 5f;
+    public float _fallMultiplier = 2f;
+    public float _lowJumpMultiplier = 1.3f;
+    public float _jumpForce = 5f;
     bool _isReadyToJump = true;
     
     void Start(){
@@ -37,7 +37,8 @@ public class PlayerJump : MonoBehaviour{
 
     public void Jump()
     {
-        if (IsColliding() && _isReadyToJump){
+        // Debug.Log($"Is player colliding ground: {IsColliding()}");
+        if (_isReadyToJump){
             _isReadyToJump = false;
             _rb.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
             StartCoroutine(JumpCoolDown());

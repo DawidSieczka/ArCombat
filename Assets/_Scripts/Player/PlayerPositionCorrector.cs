@@ -9,13 +9,7 @@ public class PlayerPositionCorrector : MonoBehaviour{
         CorrectPosition();
     }
 
-    void Update(){
-        if (Input.GetKeyDown(KeyCode.Space)){
-            CorrectPosition();
-        }
-    }
-
-    void CorrectPosition(){
+    public void CorrectPosition(){
         var startingPosition = transform.position;
         var xEndPosition = (float)(Math.Round(startingPosition.x, MidpointRounding.ToEven));
         var zEndPosition = (float)(Math.Round(startingPosition.z, MidpointRounding.ToEven));
