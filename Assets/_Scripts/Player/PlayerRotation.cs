@@ -14,6 +14,7 @@ public class PlayerRotation : MonoBehaviour
     // powoduje to że postać porusza się względem przesunięcia joysticka czy też wciśnięcia L/P inputu
     
     PlayerPositionCorrector _posCorrector;
+    PlayerAim _playerAim;
     ButtonEvent _buttonEvent;
     bool shouldRotate;
     float startRotationPos;
@@ -23,8 +24,8 @@ public class PlayerRotation : MonoBehaviour
         _posCorrector = GetComponent<PlayerPositionCorrector>();
         _buttonEvent = FindObjectOfType<ButtonEvent>();
         _buttonEvent.OnRotated.AddListener(InvokeRotation);
+        _playerAim = FindObjectOfType<PlayerAim>();
     }
-    
 
     void Update(){
         if(shouldRotate)
@@ -41,14 +42,15 @@ public class PlayerRotation : MonoBehaviour
     }
     void InvokeRotation()
     {
-        shouldRotate = true;
-        startRotationPos = transform.rotation.eulerAngles.y;
-        var targetAngle = (float)startRotationPos + 90;
-        endRotationPos = RoundValueToCorrectAngle(targetAngle);
-        print(endRotationPos);
-
-        _posCorrector.CorrectPosition();
-        
+        if (!shouldRotate) //You can click Invoke only when player is not rotating
+        {
+            shouldRotate = true;
+            startRotationPos = transform.rotation.eulerAngles.y;
+            var targetAngle = (float)startRotationPos + 90;
+            endRotationPos = RoundValueToCorrectAngle(targetAngle);
+            _posCorrector.CorrectPosition();
+            _playerAim.ChangeDepthAxis();
+        }
     }
     public float RoundValueToCorrectAngle(float inputValue)
     {
@@ -63,7 +65,6 @@ public class PlayerRotation : MonoBehaviour
         foreach (var correctValue in CorrectValues)
         {
             var difference = Math.Abs(inputValue - correctValue);
-            Debug.Log(difference);
 
             bool isTheSmallestDifference = (difference <= theSmallestDifeerence);
             if (isTheSmallestDifference)
@@ -74,7 +75,5 @@ public class PlayerRotation : MonoBehaviour
         }
 
         return roundedAngle;
-
-
     }
 }
