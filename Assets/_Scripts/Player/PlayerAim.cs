@@ -14,6 +14,7 @@ public class PlayerAim : MonoBehaviour
     int _layerMask = 1 << 10;
     RaycastHit[] hits;
     Renderer _aimingLineShaderRenderer;
+    public Vector3? aimedPoint;
     void Awake(){
         //spawn _aimingLine
         _aimingLine = Instantiate(_aimingLinePrefab, Vector3.zero , Quaternion.identity);
@@ -40,8 +41,10 @@ public class PlayerAim : MonoBehaviour
             _aimedTargetPosition = aimedTargetPosition;
             _isPointingAtTarget = true;
             _aimingLine.SetActive(true);
+            aimedPoint = aimedTargetPosition;
         }
         else{
+            _aimedTargetPosition = null;
             _isPointingAtTarget = false;
             _aimingLine.SetActive(false);
         }
@@ -87,7 +90,6 @@ public class PlayerAim : MonoBehaviour
 
             
             _aimingLine.transform.localScale = new Vector3(_aimingLine.transform.localScale.x, scaleY, _aimingLine.transform.localScale.z );
-            print(_aimingLineShaderRenderer.material.GetFloat("_distanceScaleValue"));
             //
             //  Getting collisions on the aiming line way
             //

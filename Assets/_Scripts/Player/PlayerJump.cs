@@ -7,7 +7,7 @@ public class PlayerJump : MonoBehaviour{
 
     Rigidbody _rb;
     PlayerColliders _playerColliders;
-    ButtonEvent newJumpButton;
+    ButtonEvent jumpButton;
 
     public float fallMultiplier;
     public float lowJumpMultiplier;
@@ -17,8 +17,8 @@ public class PlayerJump : MonoBehaviour{
     void Start(){
         _rb = GetComponent<Rigidbody>();
         _playerColliders = GetComponent<PlayerColliders>();
-        newJumpButton = FindObjectOfType<ButtonEvent>();
-        newJumpButton.OnJumped.AddListener(Jump);
+        jumpButton = FindObjectOfType<ButtonEvent>();
+        jumpButton.OnJumped.AddListener(Jump);
     }
 
     void Update(){

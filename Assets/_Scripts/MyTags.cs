@@ -5,5 +5,6 @@
     RotateLeft,
     RotateRight,
     Platform,
-    hook
+    hook,
+    Enemy
 }

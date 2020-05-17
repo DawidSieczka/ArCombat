@@ -10,6 +10,8 @@ public class ButtonEvent : MonoBehaviour{
     public UnityEvent OnRestarted;
     [HideInInspector]
     public UnityEvent OnRotated;
+    [HideInInspector]
+    public UnityEvent OnShoot;
 
     [HideInInspector]
     public void Jump(){
@@ -24,5 +26,10 @@ public class ButtonEvent : MonoBehaviour{
     [HideInInspector]
     public void Rotate(){
         OnRotated.Invoke();
+    }
+
+    [HideInInspector]
+    public void Shoot(){
+        OnShoot.Invoke();   
     }
 }
