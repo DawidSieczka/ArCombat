@@ -48,7 +48,6 @@ public class PlayerAim : MonoBehaviour
     }
 
     void Update(){
-        print(Camera.main.name);
         hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.TransformDirection(Vector3.forward), Mathf.Infinity, _layerMask); //wsadzic do kamery, dodac interface'y, dodac event na podstawie trafienia
         var isRaycastHitting = (hits.Length > 0);
         if (!isRaycastHitting)

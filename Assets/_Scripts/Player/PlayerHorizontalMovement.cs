@@ -10,7 +10,6 @@ public class PlayerHorizontalMovement : MonoBehaviour{
     public float speed =  1.2f;
     public static int direction;
     public Camera ARcam;
-
     SideDetector _sideDetector;
     void Start()
     {

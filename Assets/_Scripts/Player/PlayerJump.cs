@@ -9,9 +9,9 @@ public class PlayerJump : MonoBehaviour{
     PlayerColliders _playerColliders;
     ButtonEvent newJumpButton;
 
-    public float _fallMultiplier = 2f;
-    public float _lowJumpMultiplier = 1.3f;
-    public float _jumpForce = 5f;
+    public float fallMultiplier;
+    public float lowJumpMultiplier;
+    public float jumpForce;
     bool _isReadyToJump = true;
     
     void Start(){
@@ -22,7 +22,7 @@ public class PlayerJump : MonoBehaviour{
     }
 
     void Update(){
-       // FallingController();
+        FallingController();
     }
 
 
@@ -37,25 +37,28 @@ public class PlayerJump : MonoBehaviour{
 
     public void Jump()
     {
-        // Debug.Log($"Is player colliding ground: {IsColliding()}");
-        if (_isReadyToJump){
+        Debug.Log($"Is player colliding ground: {IsColliding()}");
+        if (_isReadyToJump && IsColliding())
+        {
             _isReadyToJump = false;
-            _rb.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+            _rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
             StartCoroutine(JumpCoolDown());
         }
     }
 
     void FallingController(){
         if (_rb.velocity.y < 0){
-            _rb.velocity += Vector3.up * Physics.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
+            _rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
         else if (_rb.velocity.y > 0){
-            _rb.velocity += Vector3.up * Physics.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime;
+            _rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }
 
     IEnumerator JumpCoolDown(){
-        yield return new WaitForSeconds(0.1f);
+     
+        yield return new WaitForSeconds(.1f);
         _isReadyToJump = true;
+
     }
 }
