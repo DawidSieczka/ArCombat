@@ -8,13 +8,13 @@ public class PlayerAim : MonoBehaviour
     GameObject _aimingLinePrefab;
     GameObject _aimingLine;
     Vector3 _playerPos;
-    bool _isZDepthAxis = true;
+    public bool isZDepthAxis = true;
     bool _isPointingAtTarget;
-    Vector3? _aimedTargetPosition;
+    [HideInInspector]
+    public Vector3? aimedTargetPosition;
     int _layerMask = 1 << 10;
     RaycastHit[] hits;
     Renderer _aimingLineShaderRenderer;
-    public Vector3? aimedPoint;
     void Awake(){
         //spawn _aimingLine
         _aimingLine = Instantiate(_aimingLinePrefab, Vector3.zero , Quaternion.identity);
@@ -23,28 +23,27 @@ public class PlayerAim : MonoBehaviour
 
     //invoked only from Player Rotation button
     public void ChangeDepthAxis(){
-        if (_isZDepthAxis)
-            _isZDepthAxis = false;
+        if (isZDepthAxis)
+            isZDepthAxis = false;
         else
-            _isZDepthAxis = true;
+            isZDepthAxis = true;
     }
 
     bool isTargetStandingInTheSameAxis(Vector3 aimedTargetPosition){
         var _acceptableDifference = 0.5f;
-        if (_isZDepthAxis)
+        if (isZDepthAxis)
             return (Mathf.Abs(transform.position.z - aimedTargetPosition.z) < _acceptableDifference);
         else
             return (Mathf.Abs(transform.position.x - aimedTargetPosition.x) < _acceptableDifference);
     }
-    public void SetIsPlayerPointingTarget(Vector3 aimedTargetPosition){
-        if (aimedTargetPosition != null && isTargetStandingInTheSameAxis(aimedTargetPosition)){
-            _aimedTargetPosition = aimedTargetPosition;
+    public void SetIsPlayerPointingTarget(GameObject aimedTarget,Vector3 aimingPoint){
+        if (aimedTarget != null && isTargetStandingInTheSameAxis(aimedTarget.transform.position)){
+            aimedTargetPosition = new Vector3(aimedTarget.transform.position.x, aimingPoint.y, aimedTarget.transform.position.z);
             _isPointingAtTarget = true;
             _aimingLine.SetActive(true);
-            aimedPoint = aimedTargetPosition;
         }
         else{
-            _aimedTargetPosition = null;
+            aimedTargetPosition = null;
             _isPointingAtTarget = false;
             _aimingLine.SetActive(false);
         }
@@ -56,26 +55,26 @@ public class PlayerAim : MonoBehaviour
         if (!isRaycastHitting)
             return;
         else{
-            SetIsPlayerPointingTarget(hits[0].point);
+            SetIsPlayerPointingTarget(hits[0].collider.gameObject,hits[0].point);
             Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.TransformDirection(Vector3.forward) * hits[0].distance, Color.yellow);
         }
 
         if (_isPointingAtTarget){
             //calculate middle position between player and middle of the screen
             _playerPos = transform.position;
-            var _xAxisMiddlePoint = (_aimedTargetPosition.Value.x - _playerPos.x) / 2;
-            var _zAxisMiddlePoint = (_aimedTargetPosition.Value.z - _playerPos.z) / 2;
-            var _yAxisMiddlePoint = (_aimedTargetPosition.Value.y - _playerPos.y) / 2;
+            var _xAxisMiddlePoint = (aimedTargetPosition.Value.x - _playerPos.x) / 2;
+            var _zAxisMiddlePoint = (aimedTargetPosition.Value.z - _playerPos.z) / 2;
+            var _yAxisMiddlePoint = (aimedTargetPosition.Value.y - _playerPos.y) / 2;
 
             //
             //  Rotate aiming line and set _aimingLine between target and player
             //
             
-            var _direction = (transform.position - _aimedTargetPosition.Value);
-            var scaleY = Vector3.Distance(_aimedTargetPosition.Value, _playerPos) * 0.5f;
+            var _direction = (transform.position - aimedTargetPosition.Value);
+            var scaleY = Vector3.Distance(aimedTargetPosition.Value, _playerPos) * 0.5f;
             _aimingLineShaderRenderer.material.SetFloat("_distanceScaleValue", scaleY);
 
-            if (_isZDepthAxis)
+            if (isZDepthAxis)
             {
                 float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg - 90;
                 _aimingLine.transform.position = new Vector3(_playerPos.x + _xAxisMiddlePoint, _playerPos.y + _yAxisMiddlePoint, _playerPos.z);

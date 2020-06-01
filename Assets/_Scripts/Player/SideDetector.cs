@@ -4,23 +4,45 @@ using UnityEngine;
 
 public class SideDetector : MonoBehaviour
 {
+    [HideInInspector]
     public side CurrentSide = side.front;
-    void OnTriggerEnter(Collider other)
+    GameObject _player;
+    Vector3 _playerPos;
+    Vector3 _camPos;
+    Vector3 _camPlayerDifferent;
+    private void Start()
     {
-        if (other.CompareTag("MainCamera"))
-        {
-            ChangeSide();
-        }
+        _player = GameObject.FindGameObjectWithTag(Tag.Player.ToString());   
     }
-    void ChangeSide()
+    
+    private void Update()
     {
-        if (CurrentSide == side.front)
+        _playerPos = _player.transform.position;
+        _camPos = transform.position;
+        _camPlayerDifferent = _camPos - _playerPos;
+        var _isZDepthAxis = _player.GetComponent<PlayerAim>().isZDepthAxis;
+        if (_isZDepthAxis)
         {
-            CurrentSide = side.back;
+            if (_camPlayerDifferent.z < 0)
+            {
+                CurrentSide = side.front;
+            }
+            else
+            {
+                CurrentSide = side.back;
+            }
         }
         else
         {
-            CurrentSide = side.front;
+            if(_camPlayerDifferent.x < 0)
+            {
+                CurrentSide = side.front;
+            }
+            else
+            {
+                CurrentSide = side.back;
+
+            }
         }
     }
 }

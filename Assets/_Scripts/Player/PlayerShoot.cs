@@ -23,7 +23,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     void Update() {
-        _aimedPoint = _playerAim.aimedPoint;
+        _aimedPoint = _playerAim.aimedTargetPosition;
     }
 
     void SetAmmo()
