@@ -53,8 +53,12 @@ public class PlayerAim : MonoBehaviour
         hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.TransformDirection(Vector3.forward), Mathf.Infinity, _layerMask); //wsadzic do kamery, dodac interface'y, dodac event na podstawie trafienia
         var isRaycastHitting = (hits.Length > 0);
         if (!isRaycastHitting)
+        {
+            _aimingLine.SetActive(false);   
             return;
-        else{
+        }
+        else
+        {
             SetIsPlayerPointingTarget(hits[0].collider.gameObject,hits[0].point);
             Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.TransformDirection(Vector3.forward) * hits[0].distance, Color.yellow);
         }

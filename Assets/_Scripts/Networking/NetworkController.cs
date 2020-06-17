@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class NetworkController : MonoBehaviourPunCallbacks
 {
-    private void Start()
+    private void Awake()
     {
         PhotonNetwork.ConnectUsingSettings();
     }
