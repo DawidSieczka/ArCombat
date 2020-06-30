@@ -6,5 +6,7 @@
     RotateRight,
     Platform,
     hook,
-    Enemy
+    Enemy,
+    PlayerHp,
+    Spawner
 }

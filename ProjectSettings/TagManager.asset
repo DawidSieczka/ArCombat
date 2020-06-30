@@ -7,6 +7,8 @@ TagManager:
   - GameManager
   - PillarTag
   - Enemy
+  - PlayerHp
+  - Spawner
   layers:
   - Default
   - TransparentFX
