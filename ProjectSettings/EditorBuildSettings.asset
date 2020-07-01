@@ -5,13 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/[Dawid] Main Menu.unity
-    guid: ecdcf44750b185d418d43038d91fd877
   - enabled: 1
     path: Assets/Scenes/Area 1.unity
     guid: d737e9e570e28f342a6bde7d29033c93
-  - enabled: 0
-    path: Assets/Scenes/[Dawid] run net.unity
-    guid: 49b42560662fd4c41a8c2adce243210f
   m_configObjects: {}
