@@ -7,7 +7,8 @@ public class PlayerJump : MonoBehaviour{
 
     Rigidbody _rb;
     PlayerColliders _playerColliders;
-    ButtonEvent jumpButton;
+    ButtonEvent _jumpButton;
+    ParticleSystem _particle;
 
     public float fallMultiplier;
     public float lowJumpMultiplier;
@@ -17,8 +18,9 @@ public class PlayerJump : MonoBehaviour{
     void Start(){
         _rb = GetComponent<Rigidbody>();
         _playerColliders = GetComponent<PlayerColliders>();
-        jumpButton = FindObjectOfType<ButtonEvent>();
-        jumpButton.OnJumped.AddListener(Jump);
+        _jumpButton = FindObjectOfType<ButtonEvent>();
+        _jumpButton.OnJumped.AddListener(Jump);
+        _particle = GetComponentInChildren<ParticleSystem>();
     }
 
     void Update(){
@@ -40,6 +42,7 @@ public class PlayerJump : MonoBehaviour{
         Debug.Log($"Is player colliding ground: {IsColliding()}");
         if (_isReadyToJump && IsColliding())
         {
+            _particle.Play();
             _isReadyToJump = false;
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
             StartCoroutine(JumpCoolDown());
