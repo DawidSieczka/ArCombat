@@ -1,19 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    List<SpawnPoint> SpawnPoints;
+    private List<SpawnPoint> SpawnPoints;
 
     [SerializeField]
-    GameObject Player;
+    private GameObject Player;
 
     private void Awake()
     {
         InvokeSpawning();
     }
+
     public void InvokeSpawning()
     {
         SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
@@ -21,7 +21,7 @@ public class Spawner : MonoBehaviour
         SpawnPoints[anySpawn].SpawnPlayer(Player);
     }
 
-    int TakeRandomSpawnPoint(int amount)
+    private int TakeRandomSpawnPoint(int amount)
     {
         System.Random rand = new System.Random();
         return rand.Next(amount);

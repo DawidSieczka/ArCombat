@@ -47,8 +47,7 @@ public class PlayerHP : MonoBehaviour
         }
         if (HP <= 0)
         {
-            HP = 0;
-            _hpBar.transform.localScale = new Vector3(HP, _hpBar.transform.localScale.y, _hpBar.transform.localScale.z);
+            SetMinHP();
         }
     }
 
@@ -76,12 +75,13 @@ public class PlayerHP : MonoBehaviour
     {
         HP = 0;
         _hpBar.transform.localScale = new Vector3(0, _hpBar.transform.localScale.y, _hpBar.transform.localScale.z);
+        this.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        //For debugging
-        if (Input.GetKeyDown(KeyCode.X))
+        //Debug
+        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.X))
         {
             SubtractHP(10);
         }

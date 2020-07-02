@@ -1,44 +1,47 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHorizontalMovement : MonoBehaviour{
-
-    public bool isDebug;
-
-    public float speed =  1.2f;
+public class PlayerHorizontalMovement : MonoBehaviour
+{
+    public float speed = 1.2f;
     public static int direction;
     public Camera ARcam;
-    SideDetector _sideDetector;
-    void Start()
+    private SideDetector _sideDetector;
+
+    private void Start()
     {
-        _sideDetector = GameObject.FindObjectOfType<SideDetector>();   
+        _sideDetector = GameObject.FindObjectOfType<SideDetector>();
     }
-    void Update(){
+
+    private void Update()
+    {
         CheckCameraAndPlayerDirection();
 
-        if (isDebug)
+        //Debug
+        if (Debug.isDebugBuild && false) //Smth not working with horizontal GetAxis
             DebugMoveComp();
         else
             MobileMovement();
     }
-    void CheckCameraAndPlayerDirection(){
+
+    private void CheckCameraAndPlayerDirection()
+    {
         if (_sideDetector.CurrentSide == side.back)
             direction *= -1;
     }
 
-    void MobileMovement(){
-            transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * direction * speed);
+    private void MobileMovement()
+    {
+        transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * direction * speed);
     }
 
-    void DebugMoveComp(){
-        var _axisX = Input.GetAxis("Horizontal");
+    private void DebugMoveComp()
+    {
+        var _axisX = Input.GetAxis("Debug Horizontal");
 
-        if (Math.Abs(_axisX) > 0){
-            transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * _axisX*direction* speed);
-
+        if (Math.Abs(_axisX) > 0)
+        {
+            transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * _axisX * direction * speed);
         }
     }
-
 }
