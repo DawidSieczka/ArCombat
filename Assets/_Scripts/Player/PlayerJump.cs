@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class PlayerJump : MonoBehaviour{
 
@@ -21,6 +22,7 @@ public class PlayerJump : MonoBehaviour{
         _jumpButton = FindObjectOfType<ButtonEvent>();
         _jumpButton.OnJumped.AddListener(Jump);
         _particle = GetComponentInChildren<ParticleSystem>();
+        
     }
 
     void Update(){
@@ -64,4 +66,5 @@ public class PlayerJump : MonoBehaviour{
         _isReadyToJump = true;
 
     }
+
 }
