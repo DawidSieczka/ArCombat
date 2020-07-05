@@ -17,11 +17,6 @@ public class PlayerHorizontalMovement : MonoBehaviour
     {
         CheckCameraAndPlayerDirection();
 
-        //Debug
-        if (Debug.isDebugBuild && false) //Smth not working with horizontal GetAxis
-            DebugMoveComp();
-        else
-            MobileMovement();
     }
 
     private void CheckCameraAndPlayerDirection()
@@ -35,13 +30,11 @@ public class PlayerHorizontalMovement : MonoBehaviour
         transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * direction * speed);
     }
 
-    private void DebugMoveComp()
-    {
-        var _axisX = Input.GetAxis("Debug Horizontal");
 
-        if (Math.Abs(_axisX) > 0)
-        {
-            transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * _axisX * direction * speed);
-        }
+    public void Move(float playerSpeed)
+    {
+        transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * playerSpeed * 4);
+
     }
+
 }

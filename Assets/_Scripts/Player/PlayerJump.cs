@@ -9,6 +9,7 @@ public class PlayerJump : MonoBehaviour{
     Rigidbody _rb;
     PlayerColliders _playerColliders;
     ButtonEvent _jumpButton;
+    TouchScreen _touchScreen;
     ParticleSystem _particle;
 
     public float fallMultiplier;
@@ -19,8 +20,8 @@ public class PlayerJump : MonoBehaviour{
     void Start(){
         _rb = GetComponent<Rigidbody>();
         _playerColliders = GetComponent<PlayerColliders>();
-        _jumpButton = FindObjectOfType<ButtonEvent>();
-        _jumpButton.OnJumped.AddListener(Jump);
+        _touchScreen = FindObjectOfType<TouchScreen>();
+        _touchScreen.OnJumped.AddListener(Jump);
         _particle = GetComponentInChildren<ParticleSystem>();
         
     }
