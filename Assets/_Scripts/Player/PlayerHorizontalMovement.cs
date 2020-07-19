@@ -3,20 +3,17 @@ using UnityEngine;
 
 public class PlayerHorizontalMovement : MonoBehaviour
 {
-    public float speed = 1.2f;
-    public static int direction;
+    PlayerColliders _playerColliders;
+    public float speedMultiplayer;
+    public static int direction = 1;
     public Camera ARcam;
     private SideDetector _sideDetector;
-
+    Rigidbody rb;
     private void Start()
     {
         _sideDetector = GameObject.FindObjectOfType<SideDetector>();
-    }
-
-    private void Update()
-    {
-        CheckCameraAndPlayerDirection();
-
+        _playerColliders = GetComponent<PlayerColliders>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void CheckCameraAndPlayerDirection()
@@ -25,16 +22,25 @@ public class PlayerHorizontalMovement : MonoBehaviour
             direction *= -1;
     }
 
-    private void MobileMovement()
-    {
-        transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * direction * speed);
-    }
-
-
     public void Move(float playerSpeed)
     {
-        transform.localPosition += transform.TransformDirection(Vector3.right * Time.deltaTime * playerSpeed * 4);
-
+        if (Math.Abs(rb.velocity.y) < .2f) 
+        rb.velocity = new Vector3(direction * Time.deltaTime * playerSpeed * speedMultiplayer, rb.velocity.y, rb.velocity.z);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.contacts.Length > 0)
+        {
+            print("styka sie");
+            rb.velocity = Vector3.zero;
+
+        }
+    }
+    private void LateUpdate()
+    {
+        if (_playerColliders._hitInfoLeft.collider && _playerColliders._hitInfoRight.collider) {
+        }
+
+    }
 }

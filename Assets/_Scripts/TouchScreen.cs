@@ -37,9 +37,6 @@ public class TouchScreen : MonoBehaviour
         var touchVectorDifference =  _currentTouch - _startTouch;
         var xDistance = _currentTouch.x - _startTouch.x;
         var yDistance = _currentTouch.y - _startTouch.y;
-        //Angle up is 0
-        //Angle down is 180
-        //Angle on the left and right are the same.
         var angle = Mathf.Atan2(touchVectorDifference.x, touchVectorDifference.y) * Mathf.Rad2Deg;
         if (angle < 0)
         {
@@ -74,6 +71,7 @@ public class TouchScreen : MonoBehaviour
         }
         else
         {
+            // ?????
         }
     }
 
@@ -103,6 +101,7 @@ public class TouchScreen : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
+
             //pobierz miejsce pierwszego dotkniecia
             if (touch.phase == TouchPhase.Began)
             {
@@ -122,6 +121,7 @@ public class TouchScreen : MonoBehaviour
             _startTouch = Vector2.zero;
             _currentTouch = Vector2.zero;
         }
+
         //if (Input.GetMouseButtonDown(0))
         //{
         //    _startTouch = Input.mousePosition;
@@ -132,7 +132,7 @@ public class TouchScreen : MonoBehaviour
         //    CalculateAngle();
 
         //}
-        starttext.text = _startTouch.ToString();
-        curenttext.text = _currentTouch.ToString();
+        //starttext.text = _startTouch.ToString();
+        //curenttext.text = _currentTouch.ToString();
     }
 }

@@ -52186,7 +52186,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -151.58002}
+  m_AnchoredPosition: {x: 400, y: -151.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1381910084
@@ -75503,7 +75503,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -366.93, y: -176.79999}
+  m_AnchoredPosition: {x: -366.93, y: -176.75}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2058581296
@@ -75840,7 +75840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f419d307db3004b88925ad8f0b6469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
+  speedMultiplayer: 0
   ARcam: {fileID: 933891597}
 --- !u!114 &2117975719
 MonoBehaviour:
@@ -77632,7 +77632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fallMultiplier: 6
   lowJumpMultiplier: 2.6
-  jumpForce: 20
+  jumpForce: 14
 --- !u!114 &7954046296741301932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77645,7 +77645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f419d307db3004b88925ad8f0b6469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
+  speedMultiplayer: 150
   ARcam: {fileID: 933891597}
 --- !u!114 &7954046296741301933
 MonoBehaviour:
