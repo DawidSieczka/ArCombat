@@ -2,6 +2,7 @@
 using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoomsManager : MonoBehaviourPunCallbacks
 {
@@ -9,10 +10,12 @@ public class RoomsManager : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private Room _roomPrefab;
-    static int num = 1;
+
+    private static int num = 1;
     private string _newRoomName = $"(Eu) room {++num}";
     private List<Room> _listings = new List<Room>();
-    RoomInfo newCreatedRoom;
+    private RoomInfo newCreatedRoom;
+
     public void OnClick_CreateRoom()
     {
         if (!PhotonNetwork.IsConnected)
@@ -21,21 +24,18 @@ public class RoomsManager : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 4;
         PhotonNetwork.JoinOrCreateRoom(_newRoomName, options, TypedLobby.Default);
-           
     }
 
-    
     public override void OnCreatedRoom()
     {
-
         Debug.Log("Room created");
 
         var listing = Instantiate(_roomPrefab, _content);
-
         if (listing != null)
         {
             listing.RoomName = _newRoomName;
             _listings.Add(listing);
+            listing.GetComponent<Button>().interactable = false;
         }
         Debug.Log("Room added to list");
 
@@ -46,7 +46,6 @@ public class RoomsManager : MonoBehaviourPunCallbacks
     {
         Debug.LogError("Room creating failed");
     }
-
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
