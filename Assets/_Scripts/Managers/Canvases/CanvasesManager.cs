@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class CanvasesManager : MonoBehaviourPunCallbacks
@@ -18,20 +19,30 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject _canvasRooms;
 
+    [SerializeField]
+    private GameObject _canvasInputName;
+
     private void Awake()
     {
         _createRoomButton.SetActive(false);
         _playButton.SetActive(false);
         _canvasRoomLobby.SetActive(false);
         _canvasRooms.SetActive(false);
+        _canvasInputName.SetActive(true);
     }
 
-    private void Start()
+    public void JoinServer(string playerName)
     {
+        if (playerName.Length < 3)
+        {
+            Debug.LogError("Name is too short");
+            return;
+        }
         print("Connecting to master...");
+        _canvasInputName.SetActive(false);
         PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.NickName = MasterManager.GameSettings.NickName;
-        PhotonNetwork.GameVersion = MasterManager.GameSettings.GameVersion;
+        PhotonNetwork.NickName = playerName;
+        PhotonNetwork.GameVersion = "0.0.0";
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -73,5 +84,6 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
     {
         print("Disconnected from server for reason: " + cause.ToString());
         base.OnDisconnected(cause);
+        _canvasInputName.SetActive(false);
     }
 }
