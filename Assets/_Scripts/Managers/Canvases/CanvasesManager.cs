@@ -31,6 +31,14 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
         _canvasInputName.SetActive(true);
     }
 
+    public override void OnConnectedToMaster()
+    {
+        print("Connected to master");
+        print("Player nick: " + PhotonNetwork.LocalPlayer.NickName);
+        if (!PhotonNetwork.InLobby)
+            PhotonNetwork.JoinLobby();
+    }
+
     public void JoinServer(string playerName)
     {
         if (playerName.Length < 3)
@@ -44,6 +52,16 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = playerName;
         PhotonNetwork.GameVersion = "0.0.0";
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        print("Joined to lobby");
+        _createRoomButton.SetActive(true);
+        _playButton.SetActive(false);
+        _leaveButton.SetActive(false);
+        _canvasRoomLobby.SetActive(false);
+        _canvasRooms.SetActive(true);
     }
 
     public override void OnJoinedRoom()
@@ -60,24 +78,6 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
         _playButton.SetActive(false);
         _leaveButton.SetActive(false);
         _canvasRoomLobby.SetActive(false);
-    }
-
-    public override void OnJoinedLobby()
-    {
-        print("Joined to lobby");
-        _createRoomButton.SetActive(true);
-        _playButton.SetActive(false);
-        _leaveButton.SetActive(false);
-        _canvasRoomLobby.SetActive(false);
-        _canvasRooms.SetActive(true);
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        print("Connected to master");
-        print("Player nick: " + PhotonNetwork.LocalPlayer.NickName);
-        if (!PhotonNetwork.InLobby)
-            PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
