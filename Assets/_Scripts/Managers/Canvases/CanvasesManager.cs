@@ -26,6 +26,15 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
         _canvasRooms.SetActive(false);
     }
 
+    private void Start()
+    {
+        print("Connecting to master...");
+        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.NickName = MasterManager.GameSettings.NickName;
+        PhotonNetwork.GameVersion = MasterManager.GameSettings.GameVersion;
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
     public override void OnJoinedRoom()
     {
         _createRoomButton.SetActive(false);
@@ -58,5 +67,11 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
         print("Player nick: " + PhotonNetwork.LocalPlayer.NickName);
         if (!PhotonNetwork.InLobby)
             PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        print("Disconnected from server for reason: " + cause.ToString());
+        base.OnDisconnected(cause);
     }
 }
