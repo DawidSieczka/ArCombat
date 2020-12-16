@@ -6,15 +6,47 @@ using UnityEngine.UI;
 
 public class RoomsManager : MonoBehaviourPunCallbacks
 {
-    public Transform _content;
+    public Transform _roomsContent;
+    public Transform _playersContent;
 
     [SerializeField]
-    private Room _roomPrefab;
+    private RoomListing _roomListingPrefab;
 
-    private static int num = 1;
-    private string _newRoomName = $"(Eu) room {++num}";
-    private List<Room> _listings = new List<Room>();
+    [SerializeField]
+    private PlayerListing _playerListingPrefab;
+
+    private static int num = 0;
+    private static string _newRoomName = $"(Eu) room {++num}";
+    private List<RoomListing> _roomListings = new List<RoomListing>();
+    private List<PlayerListing> _playerListings = new List<PlayerListing>();
     private RoomInfo newCreatedRoom;
+
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log("Entered room");
+        PlayerListing listing = Instantiate(_playerListingPrefab, _playersContent);
+
+        if (listing != null)
+        {
+            listing.SetPlayerInfo(newPlayer);
+            _playerListings.Add(listing);
+        }
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        int index = _playerListings.FindIndex(x => x.Player == otherPlayer);
+        if (index != -1)
+        {
+            Destroy(_playerListings[index].gameObject);
+            _playerListings.RemoveAt(index);
+        }
+        else
+        {
+            print($"player name to remove {otherPlayer.NickName}");
+        }
+    }
 
     public void OnClick_CreateRoom()
     {
@@ -30,16 +62,56 @@ public class RoomsManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Room created");
 
-        var listing = Instantiate(_roomPrefab, _content);
+        var listing = Instantiate(_roomListingPrefab, _roomsContent);
         if (listing != null)
         {
-            listing.RoomName = _newRoomName;
-            _listings.Add(listing);
+            listing.SetRoomName(_newRoomName);
+            _roomListings.Add(listing);
             listing.GetComponent<Button>().interactable = false;
         }
         Debug.Log("Room added to list");
 
         //OnRoomListUpdate(PhotonNetwork)
+    }
+
+    private void GetCurrentRoomPlayers()
+    {
+        foreach (var player in _playerListings)
+        {
+            Destroy(player.gameObject);
+        }
+        _playerListings.Clear();
+
+        foreach (KeyValuePair<int, Player> playerInfo in PhotonNetwork.CurrentRoom.Players)
+        {
+            AddPlayerListing(playerInfo.Value);
+        }
+    }
+
+    private void AddPlayerListing(Player thisPlayer)
+    {
+        int index = _playerListings.FindIndex(x => x.Player == thisPlayer);
+        if (index != -1)
+        {
+            _playerListings[index].SetPlayerInfo(thisPlayer);
+        }
+        else
+        {
+            PlayerListing listing = Instantiate(_playerListingPrefab, _playersContent);
+
+            if (listing != null)
+            {
+                listing.SetPlayerInfo(thisPlayer);
+                _playerListings.Add(listing);
+            }
+        }
+       
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Joined to room");
+        GetCurrentRoomPlayers();
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -54,22 +126,40 @@ public class RoomsManager : MonoBehaviourPunCallbacks
         {
             if (roomInfo.RemovedFromList)
             {
-                int index = _listings.FindIndex(x => x.RoomName == roomInfo.Name);
+                int index = _roomListings.FindIndex(x => x.RoomName == roomInfo.Name);
                 if (index != -1)
                 {
-                    Destroy(_listings[index].gameObject);
-                    _listings.RemoveAt(index);
+                    _roomListings[index].Destroy();
+                    Destroy(_roomListings[index].gameObject);
+                    _roomListings.RemoveAt(index);
+                }
+                else
+                {
+                    var roomsList = _roomsContent.GetComponentsInChildren<RoomListing>();
+                    bool shouldRemove = true;
+                    foreach (var room in roomsList)
+                    {
+                        if (room.RoomName == roomInfo.Name)
+                        {
+                            shouldRemove = false;
+                            break;
+                        }
+                    }
+
+                    if (shouldRemove)
+                        roomList.Remove(roomInfo);
                 }
             }
             else
             {
-                int index = _listings.FindIndex(x => x.RoomName == roomInfo.Name);
+                int index = _roomListings.FindIndex(x => x.RoomName == roomInfo.Name);
                 if (index == -1)
                 {
                     AddNewCreatedRoomToList(roomInfo);
                 }
                 else
                 {
+                    print("asdasdasd");
                     //todo
                 }
             }
@@ -78,13 +168,13 @@ public class RoomsManager : MonoBehaviourPunCallbacks
 
     private void AddNewCreatedRoomToList(RoomInfo roomInfo)
     {
-        var listing = Instantiate(_roomPrefab, _content);
+        var listing = Instantiate(_roomListingPrefab, _roomsContent);
 
         if (listing != null)
         {
             listing.RoomName = roomInfo.Name;
             listing.RoomCount = roomInfo.PlayerCount;
-            _listings.Add(listing);
+            _roomListings.Add(listing);
         }
     }
 }

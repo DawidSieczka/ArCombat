@@ -1,16 +1,30 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Linq;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public class RoomListing : MonoBehaviour
 {
     public string RoomName { get; set; }
-    public int RoomCount { get; set; }
 
+    public int RoomCount { get; set; }
+    private TMPro.TextMeshProUGUI text;
     private void Awake()
     {
         RoomCount = GetPlayersCount(RoomName);
+        text = GetComponentInChildren<TMPro.TextMeshProUGUI>();
+    }
+
+    public void SetRoomName(string name)
+    {
+        RoomName = name;
+        text.text = name;
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     public int GetPlayersCount(string roomName)
@@ -31,6 +45,7 @@ public class Room : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogException(ex, this);
+            Debug.LogError(ex.Message);
         }
 
         return playersCount;

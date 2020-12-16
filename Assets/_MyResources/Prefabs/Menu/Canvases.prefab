@@ -1835,7 +1835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8094769043858019982
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2120,7 +2120,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8094769044084067784
 MonoBehaviour:
@@ -2355,7 +2355,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8094769044652293806}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 728073623}
+        m_MethodName: OnClick_StartPlaying
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8094769044200919211
 GameObject:
   m_ObjectHideFlags: 0
@@ -2390,8 +2401,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 0, y: 0.000012640968}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8094769044200919212
 MonoBehaviour:
@@ -2408,10 +2419,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 10
-    m_Bottom: 10
+    m_Top: 0
+    m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 12
+  m_Spacing: 53.47
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -2451,7 +2462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8094769044223445865
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2539,14 +2550,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8094769044223445878}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6b0d8553a728454da754241479a997e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _content: {fileID: 8094769044084067785}
-  _roomPrefab: {fileID: 7833053510239881873, guid: 30e32dab52a07ea45b1a458500aae3d8,
-    type: 3}
+  _roomsContent: {fileID: 0}
+  _playersContent: {fileID: 0}
+  _roomListingPrefab: {fileID: 0}
+  _playerListingPrefab: {fileID: 0}
 --- !u!1 &8094769044264179190
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,6 +2688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8094769044412744496}
   - component: {fileID: 8094769044412744499}
+  - component: {fileID: 882120933}
   m_Layer: 0
   m_Name: Canvases
   m_TagString: Untagged
@@ -2720,6 +2733,24 @@ MonoBehaviour:
   _canvasRoomLobby: {fileID: 8094769043858019983}
   _canvasRooms: {fileID: 8094769044223445878}
   _canvasInputName: {fileID: 1993282067}
+--- !u!114 &882120933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8094769044412744497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6b0d8553a728454da754241479a997e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _roomsContent: {fileID: 8094769044084067785}
+  _playersContent: {fileID: 8094769044200919210}
+  _roomListingPrefab: {fileID: 4124304573853604537, guid: a8ea5e34a2bc3ed4a84f4852f85d769f,
+    type: 3}
+  _playerListingPrefab: {fileID: 3678115252464297569, guid: b98a0dbb9a85bc6458a6e075495d0704,
+    type: 3}
 --- !u!1 &8094769044435457196
 GameObject:
   m_ObjectHideFlags: 0
@@ -3069,13 +3100,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8094769044508028981}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6b0d8553a728454da754241479a997e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _content: {fileID: 8094769044200919210}
-  _roomPrefab: {fileID: 7833053510239881873, guid: 30e32dab52a07ea45b1a458500aae3d8,
+  _roomsContent: {fileID: 0}
+  _playersContent: {fileID: 0}
+  _roomListingPrefab: {fileID: 0}
+  _playerListingPrefab: {fileID: 3678115252464297569, guid: b98a0dbb9a85bc6458a6e075495d0704,
     type: 3}
 --- !u!1 &8094769044526547111
 GameObject:

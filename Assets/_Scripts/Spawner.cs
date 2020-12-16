@@ -11,6 +11,7 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
+
         InvokeSpawning();
     }
 
@@ -18,7 +19,10 @@ public class Spawner : MonoBehaviour
     {
         SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
         var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count);
-        SpawnPoints[anySpawn].SpawnPlayer(Player);
+        //SpawnPoints[anySpawn].SpawnPlayer(Player);
+        print("powinien spawnowac");
+        MasterManager.NetworkInstantiate(Player, SpawnPoints[anySpawn].transform.position, Player.transform.rotation);
+
     }
 
     private int TakeRandomSpawnPoint(int amount)
