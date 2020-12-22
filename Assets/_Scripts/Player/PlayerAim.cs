@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
-public class PlayerAim : MonoBehaviour
+public class PlayerAim : MonoBehaviourPun
 {
     [SerializeField]
     private GameObject _aimingLinePrefab;
@@ -21,9 +22,12 @@ public class PlayerAim : MonoBehaviour
     private void Awake()
     {
         //spawn _aimingLine
-        _aimingLine = Instantiate(_aimingLinePrefab, Vector3.zero, Quaternion.identity);
-        _aimingLineShaderRenderer = _aimingLine.GetComponent<Renderer>();
-        _sideDetector = FindObjectOfType<SideDetector>();
+        if (base.photonView.IsMine)
+        {
+            _aimingLine = Instantiate(_aimingLinePrefab, Vector3.zero, Quaternion.identity);
+            _aimingLineShaderRenderer = _aimingLine.GetComponent<Renderer>();
+            _sideDetector = FindObjectOfType<SideDetector>();
+        }
     }
 
     //invoked only from Player Rotation button
@@ -63,10 +67,13 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
+        if (_aimingLine == null)
+            return;
         hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.TransformDirection(Vector3.forward), Mathf.Infinity, _layerMask); //wsadzic do kamery, dodac interface'y, dodac event na podstawie trafienia
         var isRaycastHitting = (hits.Length > 0);
         if (!isRaycastHitting)
         {
+            aimedTargetPosition = null;
             _aimingLine.SetActive(false);
             return;
         }
