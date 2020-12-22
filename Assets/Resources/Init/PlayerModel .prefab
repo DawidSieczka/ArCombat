@@ -351,7 +351,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 7111062780357206846, guid: 588c7abb2387a8246881fc97d8d14b1b, type: 3}
-  ammoText: {fileID: 0}
 --- !u!114 &1063436536708367068
 MonoBehaviour:
   m_ObjectHideFlags: 0

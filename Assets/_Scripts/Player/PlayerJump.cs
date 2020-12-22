@@ -16,7 +16,6 @@ public class PlayerJump : MonoBehaviourPun
     public float lowJumpMultiplier;
     public float jumpForce;
     private bool _isReadyToJump = true;
-    private const byte JUMP_EVENT = 2;
 
     private void Start()
     {
@@ -57,12 +56,6 @@ public class PlayerJump : MonoBehaviourPun
         }
     }
 
-    void NetworkingClient_EventReceived(EventData obj)
-    {
-        if (obj.Code == JUMP_EVENT)
-            _rb.velocity = (Vector3)obj.CustomData;
-    }
-
     private void FallingController()
     {
         if (base.photonView.IsMine)
@@ -83,16 +76,6 @@ public class PlayerJump : MonoBehaviourPun
     {
         yield return new WaitForSeconds(.1f);
         _isReadyToJump = true;
-    }
-
-    private void OnEnable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived += NetworkingClient_EventReceived;
-    }
-
-    private void OnDisable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= NetworkingClient_EventReceived;
     }
 
 }

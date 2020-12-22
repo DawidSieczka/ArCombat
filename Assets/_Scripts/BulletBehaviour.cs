@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
-public class BulletBehaviour : MonoBehaviour
+public class BulletBehaviour : MonoBehaviourPun
 {
 
     bool isInvoked = false;
@@ -24,8 +25,11 @@ public class BulletBehaviour : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag(Tag.Enemy.ToString()))
-            Destroy(this.gameObject);
+
+        if (other.gameObject.CompareTag(Tag.Enemy.ToString()))
+            PhotonNetwork.Destroy(this.gameObject.GetComponent<PhotonView>());
+                //Destroy(this.gameObject);
+        
     }
 
     public void InvokeShoot(Vector3 direction)

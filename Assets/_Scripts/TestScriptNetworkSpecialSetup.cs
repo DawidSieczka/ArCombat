@@ -3,7 +3,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-public class BaseNetworkPlayerAction : MonoBehaviourPun, IPunObservable
+public class TestScriptNetworkSpecialSetup : MonoBehaviourPun, IPunObservable
 {
     private bool isChange;
     private const byte Change_Event = 0;

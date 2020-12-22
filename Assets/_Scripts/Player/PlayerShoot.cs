@@ -1,54 +1,64 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Photon.Pun;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class PlayerShoot : MonoBehaviour
+public class PlayerShoot : MonoBehaviourPun
 {
-    PlayerAim _playerAim;
-    Vector3? _aimedPoint;
-    ButtonEvent _shootButton;
+    private PlayerAim _playerAim;
+    private Vector3? _aimedPoint;
+    private ButtonEvent _shootButton;
     public GameObject bullet;
-    public TextMeshProUGUI ammoText;
-    int _gunMagazine = 64;
-    int _oneMagazineSet = 32; //this is amount of shootable ammount of the gun
-    int _ammoAmount = 32;
-    bool isReadToShoot = true;
+    private TextMeshProUGUI ammoText;
+    private int _gunMagazine = 64;
+    private int _oneMagazineSet = 32; //this is amount of shootable ammount of the gun
+    private int _ammoAmount = 32;
+    private bool isReadToShoot = true;
 
-    void Start() {
+    private void Start()
+    {
         _playerAim = GetComponent<PlayerAim>();
         _shootButton = FindObjectOfType<ButtonEvent>();
         _shootButton.OnShoot.AddListener(Shoot);
+        ammoText = GameObject.FindGameObjectWithTag("AmmoInfo").GetComponent<TextMeshProUGUI>();
     }
 
-    void Update() {
-        _aimedPoint = _playerAim.aimedTargetPosition;
+    private void Update()
+    {
+        if (base.photonView.IsMine)
+            _aimedPoint = _playerAim.aimedTargetPosition;
     }
 
-    void SetAmmo()
+    private void SetAmmo()
     {
         ammoText.text = $"{_ammoAmount}/{_gunMagazine}";
     }
 
-    void SetSpawnSide(){
+    private void SetSpawnSide()
+    {
         //TODO
     }
 
-    void Shoot(){
-        if (_aimedPoint != null && isReadToShoot && _ammoAmount > 0){
-            _ammoAmount--;
-            if (_ammoAmount < 1)
+    private void Shoot()
+    {
+        if (base.photonView.IsMine)
+        {
+            if (_aimedPoint != null && isReadToShoot && _ammoAmount > 0)
             {
-                isReadToShoot = false;
-                Reload();
+                _ammoAmount--;
+                if (_ammoAmount < 1)
+                {
+                    isReadToShoot = false;
+                    Reload();
+                }
+                var bulletInstance = MasterManager.NetworkInstantiate(bullet, transform.position, Quaternion.identity);
+                bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value);
+                SetAmmo();
             }
-            var bulletInstance = Instantiate(bullet,transform.position, Quaternion.identity);
-            bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value);
-            SetAmmo();
         }
     }
-    void Reload()
+
+    private void Reload()
     {
         StartCoroutine(ReloadCoolDown());
         //TODO add reload button and replace N amount with full magazine and add N amount to _gunMagazine.
@@ -58,7 +68,8 @@ public class PlayerShoot : MonoBehaviour
             _gunMagazine -= 32;
         }
     }
-    IEnumerator ReloadCoolDown()
+
+    private IEnumerator ReloadCoolDown()
     {
         yield return new WaitForSeconds(2f);
         isReadToShoot = true;

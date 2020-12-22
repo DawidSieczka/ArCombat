@@ -9,7 +9,7 @@ TagManager:
   - Enemy
   - PlayerHp
   - Spawner
-  - asdasd
+  - AmmoInfo
   layers:
   - Default
   - TransparentFX

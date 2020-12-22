@@ -6,7 +6,7 @@ public class DeadlyGround : MonoBehaviour
     {
         if (other.gameObject.CompareTag(Tag.Player.ToString()))
         {
-            GameObject.FindGameObjectWithTag(Tag.Spawner.ToString()).GetComponent<Spawner>().InvokeSpawning();
+            GameObject.FindGameObjectWithTag(Tag.Spawner.ToString()).GetComponent<Spawner>().MoveObjectToSpawner(other.gameObject);
         }
     }
 }
