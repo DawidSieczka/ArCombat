@@ -22,6 +22,8 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject _canvasInputName;
 
+
+
     private void Awake()
     {
         _createRoomButton.SetActive(false);
@@ -48,6 +50,8 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
         }
         print("Connecting to master...");
         _canvasInputName.SetActive(false);
+        //PhotonNetwork.SendRate = 40;
+        //PhotonNetwork.SerializationRate
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.NickName = playerName;
         PhotonNetwork.GameVersion = "0.0.0";

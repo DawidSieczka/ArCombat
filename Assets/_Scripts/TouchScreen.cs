@@ -30,6 +30,8 @@ public class TouchScreen : MonoBehaviour
     void Update()
     {
         SetTouchPositions();
+        if (Input.GetKeyDown(KeyCode.Space))
+            Jump();
     }
 
     private void CalculateAngle()

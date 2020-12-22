@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - PlayerHp
   - Spawner
+  - asdasd
   layers:
   - Default
   - TransparentFX

@@ -8,23 +8,28 @@ public class Spawner : MonoBehaviour
 
     [SerializeField]
     private GameObject Player;
+    public GameObject testobj;
 
     private void Awake()
     {
-
         InvokeSpawning();
     }
-
+    
     public void InvokeSpawning()
     {
         SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
         var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count);
         //SpawnPoints[anySpawn].SpawnPlayer(Player);
-        print("powinien spawnowac");
         MasterManager.NetworkInstantiate(Player, SpawnPoints[anySpawn].transform.position, Player.transform.rotation);
 
     }
 
+    public void MoveObjectToSpawner(GameObject gameObject)
+    {
+        SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
+        var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count);
+        gameObject.transform.position = SpawnPoints[anySpawn].transform.position;
+    }
     private int TakeRandomSpawnPoint(int amount)
     {
         System.Random rand = new System.Random();
