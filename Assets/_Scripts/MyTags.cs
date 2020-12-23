@@ -9,5 +9,6 @@
     hook,
     Enemy,
     PlayerHp,
-    Spawner
+    Spawner,
+    Bullet
 }

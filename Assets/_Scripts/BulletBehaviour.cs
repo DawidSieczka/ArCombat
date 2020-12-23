@@ -25,11 +25,8 @@ public class BulletBehaviour : MonoBehaviourPun
     }
     private void OnTriggerEnter(Collider other)
     {
-
-        if (other.gameObject.CompareTag(Tag.Enemy.ToString()))
+        if (!other.gameObject.CompareTag(Tag.Player.ToString()))
             PhotonNetwork.Destroy(this.gameObject.GetComponent<PhotonView>());
-                //Destroy(this.gameObject);
-        
     }
 
     public void InvokeShoot(Vector3 direction)

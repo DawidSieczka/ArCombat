@@ -90,8 +90,8 @@ public class PlayerAim : MonoBehaviourPun
             Debug.DrawRay(transform.position, raycastDirection, Color.green);
             var rayDistance = Vector3.Distance(pointingDirection, transform.position);
             var isHit = Physics.Raycast(transform.position, raycastDirection, out RaycastHit hit, rayDistance);
-            print(Vector3.Distance(hit.point, pointingDirection));
-            if (isHit && hit.collider.gameObject.layer != _groundLayer)
+
+            if (isHit && hit.collider.gameObject.layer != _groundLayer && hit.collider.gameObject.tag != Tag.Bullet.ToString())
             {
                 aimedTargetPosition = hit.point;
             }

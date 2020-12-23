@@ -39,7 +39,6 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
     {
         if(collision.contacts.Length > 0 && base.photonView.IsMine)
         {
-            print("styka sie");
             rb.velocity = Vector3.zero;
         }
     }   
