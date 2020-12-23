@@ -93,12 +93,10 @@ public class PlayerAim : MonoBehaviourPun
             print(Vector3.Distance(hit.point, pointingDirection));
             if (isHit && hit.collider.gameObject.layer != _groundLayer)
             {
-                Debug.Log("Object has been hit");
                 aimedTargetPosition = hit.point;
             }
             else
             {
-                Debug.Log("Nothing got hit");
                 aimedTargetPosition = pointingDirection;
             }
         }
