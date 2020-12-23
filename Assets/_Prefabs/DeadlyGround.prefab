@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7919696048713889491}
   - component: {fileID: 7919696048713889490}
   - component: {fileID: 7919696048713889502}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DeadlyGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
