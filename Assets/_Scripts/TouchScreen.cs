@@ -5,33 +5,38 @@ using UnityEngine.Events;
 
 public class TouchScreen : MonoBehaviour
 {
-    private float width;
-    private float height;
-    private Vector2 center;
     private Vector2 _startTouch;
     private Vector2 _currentTouch;
+    private PlayerHorizontalMovement playerMovement;
+    
     public TMPro.TextMeshProUGUI starttext;
     public TMPro.TextMeshProUGUI curenttext;
     public TMPro.TextMeshProUGUI angletext;
     public TMPro.TextMeshProUGUI distancetext;
-    private PlayerHorizontalMovement playerMovement;
+
     [HideInInspector]
     public UnityEvent OnJumped;
-    // Start is called before the first frame update
+    
     void Start()
     {
-        width = (float)Screen.width / 2.0f;
-        height = (float)Screen.height / 2.0f;
-        center = new Vector2(width, height);
         playerMovement = GameObject.FindObjectOfType<PlayerHorizontalMovement>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        SetTouchPositions();
-        if (Input.GetKeyDown(KeyCode.Space))
-            Jump();
+        if (!MenuOption.isMenuOptionOpen)
+        {
+            SetTouchPositions();
+
+#if UNITY_EDITOR
+            
+            var horizontalInput = Input.GetAxisRaw("Horizontal");
+            MoveHorizontal(horizontalInput * 4);
+            
+            if (Input.GetKeyDown(KeyCode.Space))
+                Jump();
+#endif
+        }
     }
 
     private void CalculateAngle()
@@ -73,6 +78,7 @@ public class TouchScreen : MonoBehaviour
         }
         else
         {
+            //postac kuca ? cos mozna tu ustawić tj zmiana broni albo rzut granatem ...
             // ?????
         }
     }
@@ -82,7 +88,11 @@ public class TouchScreen : MonoBehaviour
     {
         OnJumped.Invoke();
     }
-
+    private void MoveHorizontal(float input)
+    {
+        //used in debug
+        playerMovement.Move(input);
+    }
     private void MoveHorizontal(float xDistance, int minSlide)
     {
         var direction = 0;
@@ -123,18 +133,5 @@ public class TouchScreen : MonoBehaviour
             _startTouch = Vector2.zero;
             _currentTouch = Vector2.zero;
         }
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    _startTouch = Input.mousePosition;
-        //}
-        //else if (Input.GetMouseButton(1))
-        //{
-        //    _currentTouch = Input.mousePosition;
-        //    CalculateAngle();
-
-        //}
-        //starttext.text = _startTouch.ToString();
-        //curenttext.text = _currentTouch.ToString();
     }
 }

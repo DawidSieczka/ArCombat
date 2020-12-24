@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerJump : MonoBehaviourPun
 {
@@ -26,11 +27,6 @@ public class PlayerJump : MonoBehaviourPun
         _particle = GetComponentInChildren<ParticleSystem>();
     }
 
-    private void Update()
-    {
-        FallingController();
-    }
-
     public bool IsColliding()
     {
         if (_playerColliders._hitInfoLeft.collider == null && _playerColliders._hitInfoRight.collider == null)
@@ -50,24 +46,11 @@ public class PlayerJump : MonoBehaviourPun
         {
             _particle.Play();
             _isReadyToJump = false;
-            _rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+            //transform.position += Vector3.up * jumpForce * Time.deltaTime;
+            _rb.AddForce(Vector3.up * jumpForce,ForceMode.Impulse);
+            //transform.position = transform.TransformDirection(new Vector3(transform.position.x, jumpForce, transform.position.z));
+
             StartCoroutine(JumpCoolDown());
-
-        }
-    }
-
-    private void FallingController()
-    {
-        if (base.photonView.IsMine)
-        {
-            if (_rb.velocity.y < 0)
-            {
-                _rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-            }
-            else if (_rb.velocity.y > 0)
-            {
-                _rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-            }
 
         }
     }

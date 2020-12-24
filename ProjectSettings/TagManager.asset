@@ -10,6 +10,7 @@ TagManager:
   - PlayerHp
   - Spawner
   - AmmoInfo
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Pillar
   - Enemy
   - Ground
-  - 
+  - Bullet
   - 
   - 
   - 

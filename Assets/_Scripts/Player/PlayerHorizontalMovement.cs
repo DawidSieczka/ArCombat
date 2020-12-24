@@ -11,9 +11,8 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
     public Camera ARcam;
     private SideDetector _sideDetector;
     Rigidbody rb;
-    
-    private const byte HORIZONTALMOVE_EVENT = 1;
 
+    [SerializeField] [Range(0, 1)] float LerpConstant;
     private void Start()
     {
         _sideDetector = GameObject.FindObjectOfType<SideDetector>();
@@ -29,9 +28,9 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
 
     public void Move(float playerSpeed)
     {
-        if (Math.Abs(rb.velocity.y) < .2f && base.photonView.IsMine)
+        if (base.photonView.IsMine)
         {
-            rb.velocity = new Vector3(direction * Time.deltaTime * playerSpeed * speedMultiplayer, rb.velocity.y, rb.velocity.z);
+            transform.position += Vector3.right * speedMultiplayer * direction * playerSpeed * Time.deltaTime; 
         }
     }
 
