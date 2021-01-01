@@ -12,10 +12,6 @@ public class BulletBehaviour : MonoBehaviourPun
     Vector3 _direction;
     float _speed = 2f;
 
-    void Start(){
-
-    }
-
     void Update(){
         if (isInvoked)
         {

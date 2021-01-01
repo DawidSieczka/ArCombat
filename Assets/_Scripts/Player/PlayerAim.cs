@@ -21,6 +21,7 @@ public class PlayerAim : MonoBehaviourPun
     private SideDetector _sideDetector;
     private PlayerCameraCenter _playerCameraCenter;
     private const int _groundLayer = 11;
+    private const int _spawnLayer = 13;
     private void Awake()
     {
         //spawn _aimingLine
@@ -91,7 +92,7 @@ public class PlayerAim : MonoBehaviourPun
             var rayDistance = Vector3.Distance(pointingDirection, transform.position);
             var isHit = Physics.Raycast(transform.position, raycastDirection, out RaycastHit hit, rayDistance);
 
-            if (isHit && hit.collider.gameObject.layer != _groundLayer && hit.collider.gameObject.tag != Tag.Bullet.ToString())
+            if (isHit && isHittingCorrectObjects(hit))
             {
                 aimedTargetPosition = hit.point;
             }
@@ -104,6 +105,12 @@ public class PlayerAim : MonoBehaviourPun
         {
             Debug.LogError(ex.Message);
         }
+    }
+    private bool isHittingCorrectObjects(RaycastHit hit)
+    {
+        return hit.collider.gameObject.layer != _groundLayer
+            && hit.collider.gameObject.tag != Tag.Bullet.ToString()
+            && hit.collider.gameObject.layer != _spawnLayer;
     }
     private Vector3 GetNormalizedRaycastDirection(Vector3 pointingDirection)
     {
