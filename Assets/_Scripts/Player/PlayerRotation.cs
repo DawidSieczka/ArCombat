@@ -21,11 +21,11 @@ public class PlayerRotation : MonoBehaviour
 
     private void Start()
     {
-        _posCorrector = GetComponent<PlayerPositionCorrector>();
         _buttonEvent = FindObjectOfType<ButtonEvent>();
         _buttonEvent.OnRotated.AddListener(InvokeRotation);
-        _playerAim = FindObjectOfType<PlayerAim>();
-        _sideDetector = FindObjectOfType<SideDetector>();
+        _posCorrector = GetComponent<PlayerPositionCorrector>();
+        _playerAim = GetComponent<PlayerAim>();
+        _sideDetector = GetComponent<SideDetector>();
     }
 
     private void Update()

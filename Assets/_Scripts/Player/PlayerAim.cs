@@ -29,7 +29,7 @@ public class PlayerAim : MonoBehaviourPun
         {
             _aimingLine = Instantiate(_aimingLinePrefab, Vector3.zero, Quaternion.identity);
             _aimingLineShaderRenderer = _aimingLine.GetComponent<Renderer>();
-            _sideDetector = FindObjectOfType<SideDetector>();
+            _sideDetector = GetComponent<SideDetector>();
             _playerCameraCenter = Camera.main.GetComponentInChildren<PlayerCameraCenter>();
         }
     }
@@ -41,7 +41,6 @@ public class PlayerAim : MonoBehaviourPun
             isZDepthAxis = false;
         else
             isZDepthAxis = true;
-        _sideDetector.IsZDepthAxis = isZDepthAxis;
     }
 
     private void Update()

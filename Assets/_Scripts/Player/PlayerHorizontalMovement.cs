@@ -33,6 +33,9 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
         if (base.photonView.IsMine)
         {
             CheckCameraAndPlayerDirection();
+            print($"vectordepth: {GetVectorDepthDirection()}");
+            print($"direction: {direction}");
+            print($"SideDetector: {_sideDetector.CurrentSide}");
             transform.position += GetVectorDepthDirection() * speedMultiplayer * direction * playerSpeed * Time.deltaTime; 
         }
     }

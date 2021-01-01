@@ -8,21 +8,21 @@ public class SideDetector : MonoBehaviour
     [HideInInspector]
     public bool IsZDepthAxis;
 
-    private GameObject _player;
+    private GameObject _camera;
     private Vector3 _playerPos;
     private Vector3 _camPos;
     private Vector3 _camPlayerDifferent;
 
-    public void Init()
+    public void Awake()
     {
-        _player = GameObject.FindGameObjectWithTag(Tag.Player.ToString());
+        _camera = GameObject.FindGameObjectWithTag(Tag.MainCamera.ToString());
     }
 
     private void Update()
     {
-        if (_player == null)
+        if (_camera == null)
         {
-            Debug.LogError("Side detector can't find the player");
+            Debug.LogError("Side detector can't find the main camera");
             return;
         }
 
@@ -39,7 +39,7 @@ public class SideDetector : MonoBehaviour
     {
         if (IsZDepthAxis)
         {
-            if (_camPlayerDifferent.z < 0)
+            if (_camPlayerDifferent.x < 0)
             {
                 CurrentSide = side.front;
             }
@@ -50,22 +50,22 @@ public class SideDetector : MonoBehaviour
         }
         else
         {
-            if (_camPlayerDifferent.x < 0)
+            if (_camPlayerDifferent.z < 0)
             {
-                CurrentSide = side.front;
+                CurrentSide = side.back;
             }
             else
             {
-                CurrentSide = side.back;
+                CurrentSide = side.front;
             }
         }
     }
 
     private void SetLocations()
     {
-        _playerPos = _player.transform.position;
-        _camPos = transform.position;
-        _camPlayerDifferent = _camPos - _playerPos;
+        _playerPos = transform.position;
+        _camPos = _camera.transform.position;
+        _camPlayerDifferent = _playerPos - _camPos;
     }
 }
 

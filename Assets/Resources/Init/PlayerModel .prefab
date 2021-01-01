@@ -264,15 +264,15 @@ GameObject:
   - component: {fileID: 1063436536708367063}
   - component: {fileID: 1063436536708367062}
   - component: {fileID: 1063436536708367041}
-  - component: {fileID: 614098387}
   - component: {fileID: 6074551712553875315}
   - component: {fileID: 4776567329497960384}
   - component: {fileID: 1734736968422849127}
   - component: {fileID: 3301660286974572764}
+  - component: {fileID: 4576940760241063231}
   m_Layer: 0
   m_Name: 'PlayerModel '
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -475,18 +475,6 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &614098387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063436536708367061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7280d223fcc7e4db4a2d5ade01cef6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6074551712553875315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,6 +571,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99ba6a7ba05bb546862c021ed1c1451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4576940760241063231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063436536708367061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 236393095b4ea6842adf8abdf7ec1117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentSide: 1
+  IsZDepthAxis: 0
 --- !u!1 &1129164621298578760
 GameObject:
   m_ObjectHideFlags: 0

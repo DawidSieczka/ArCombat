@@ -10,5 +10,6 @@
     Enemy,
     PlayerHp,
     Spawner,
-    Bullet
+    Bullet,
+    MainCamera
 }
