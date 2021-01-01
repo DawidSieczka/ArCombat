@@ -31,6 +31,7 @@ public class TestScriptNetworkSpecialSetup : MonoBehaviourPun, IPunObservable
             transform.rotation = (Quaternion)stream.ReceiveNext();
         }
     }
+
     private void OnEnable()
     {
         PhotonNetwork.NetworkingClient.EventReceived += NetworkingClient_EventReceived;

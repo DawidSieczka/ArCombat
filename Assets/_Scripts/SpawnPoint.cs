@@ -2,14 +2,31 @@
 
 public class SpawnPoint : MonoBehaviour
 {
-    public void SpawnPlayer(GameObject Player)
+    public bool isOccupied { get; set; }
+
+    private Spawner _spawner;
+
+    private void Awake()
     {
-        var rb = Player.GetComponent<Rigidbody>();
-        
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        Player.transform.localEulerAngles = Vector3.zero;
-        Player.transform.position = this.gameObject.transform.position;
-        Player.SetActive(true);
+        _spawner = GetComponentInParent<Spawner>();
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag(Tag.Enemy.ToString()))
+        {
+            print($"Enemy detected - occupied: {other.gameObject.name}");
+            isOccupied = true;
+            StartCoroutine(_spawner.ExcludeSpawnPointTemporarily(this));
+        }
+        else if (other.gameObject.CompareTag(Tag.Player.ToString()) && isOccupied)
+        {
+            print($"moved object to another spawner: {other.gameObject.name}");
+            _spawner.MoveObjectToSpawner(other.gameObject);
+        }
+        else
+        {
+            //print($"the collded object: {other.gameObject.name}");
+        }
     }
 }

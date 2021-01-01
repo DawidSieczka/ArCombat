@@ -17,13 +17,18 @@ public class TouchScreen : MonoBehaviour
     [HideInInspector]
     public UnityEvent OnJumped;
     
-    void Start()
+    public void GetPlayerHorizontalMovement(GameObject player)
     {
-        playerMovement = GameObject.FindObjectOfType<PlayerHorizontalMovement>();
+        playerMovement = player.GetComponent<PlayerHorizontalMovement>();
     }
-
     void Update()
     {
+        if (playerMovement == null)
+        {
+            Debug.LogWarning("Player Horizontal Movement is not attached yet.");
+            return;
+        }
+
         if (!MenuOption.isMenuOptionOpen)
         {
             SetTouchPositions();
