@@ -23,15 +23,26 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
     private void CheckCameraAndPlayerDirection()
     {
         if (_sideDetector.CurrentSide == side.back)
-            direction *= -1;
+            direction = -1;
+        else
+            direction = 1;
     }
 
     public void Move(float playerSpeed)
     {
         if (base.photonView.IsMine)
         {
-            transform.position += Vector3.right * speedMultiplayer * direction * playerSpeed * Time.deltaTime; 
+            CheckCameraAndPlayerDirection();
+            transform.position += GetVectorDepthDirection() * speedMultiplayer * direction * playerSpeed * Time.deltaTime; 
         }
+    }
+
+    Vector3 GetVectorDepthDirection()
+    {
+        if (_sideDetector.IsZDepthAxis)
+            return Vector3.forward;
+        else
+            return Vector3.right;
     }
 
     private void OnCollisionEnter(Collision collision)

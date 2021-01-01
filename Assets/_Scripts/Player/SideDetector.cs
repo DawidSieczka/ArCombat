@@ -30,6 +30,11 @@ public class SideDetector : MonoBehaviour
         SetCurrentPlayerSideForCamera();
     }
 
+    public void ChangeDepthAxis()
+    {
+        IsZDepthAxis = !IsZDepthAxis;
+    }
+
     private void SetCurrentPlayerSideForCamera()
     {
         if (IsZDepthAxis)
