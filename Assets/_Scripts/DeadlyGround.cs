@@ -23,9 +23,12 @@ public class DeadlyGround : MonoBehaviour
     {
         if (!isPlayerBelowGround)
         {
-            if (_player.transform.position.y < transform.position.y || _player.transform.position.y > 20)
+            if (_player != null)
             {
-                StartCoroutine(CorrectPlayerPositionToSpawner());
+                if (_player.transform.position.y < transform.position.y || _player.transform.position.y > 20)
+                {
+                    StartCoroutine(CorrectPlayerPositionToSpawner());
+                }
             }
         }
     }
