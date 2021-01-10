@@ -32,8 +32,6 @@ public class BulletBehaviour : MonoBehaviourPun
             {
                 Debug.Log($"(Damage) object that has been hit: {other.gameObject.name}, {other.gameObject.tag} | Hit with value: {BulletDamage}");
                 var hittenPlayer = other.gameObject.GetComponent<PhotonView>();
-                //PhotonNetwork.RaiseEvent(TAKEDAMAGE_EVENTCODE, BulletDamage, RaiseEventOptions.Default, SendOptions.SendReliable);
-                //PhotonNetwork.RaiseEvent(test_EVENTCODE, _bulletOwner, RaiseEventOptions.Default, SendOptions.SendReliable);
                 hittenPlayer.RPC("GetHit", hittenPlayer.Controller, 10, _bulletOwner);
                 PhotonNetwork.Destroy(this.gameObject.GetComponent<PhotonView>());
             }

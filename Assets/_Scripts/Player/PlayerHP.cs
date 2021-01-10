@@ -21,12 +21,9 @@ public class PlayerHP : MonoBehaviourPun
         {
             Debug.Log($"Player: {gameObject.name} | {this.gameObject.tag}, get hit: {damage}");
 
-            if (_hp > 0)
-            {
-                _hp -= damage;
-                var percentageOfDamage = ((float)damage / 100);
-                _hpBar.transform.localScale -= new Vector3(percentageOfDamage, 0, 0);
-            }
+            _hp -= damage;
+            var percentageOfDamage = ((float)damage / 100);
+            _hpBar.transform.localScale -= new Vector3(percentageOfDamage, 0, 0);
         }
     }
 
@@ -83,29 +80,32 @@ public class PlayerHP : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void UpdateScoreboard()
-    {
-        var players = PhotonNetwork.PlayerList;
-        foreach (var player in players)
-        {
-            Debug.Log($"Player {player.NickName} has {(int)player.CustomProperties["Kills"]} points and {(int)player.CustomProperties["Deaths"]} deaths!");
-        }
-
-        Debug.Log($"Some player got 1 point !!!");
-    }
-
-    [PunRPC]
     public void GetHit(int damage, Player enemy)
     {
         if (photonView.IsMine)
         {
             Debug.Log($"The player {photonView.ControllerActorNr} got hit with dmg: {damage} from player: {enemy.ActorNumber}");
-            SubtractHP(damage);
+            if (_hp > 0)
+            {
+                SubtractHP(damage);
+            }
+            else
+            {
+                Debug.LogWarning("Player is not alive but got hit...");
+                return;
+            }
+
             if (_hp <= 0)
             {
                 Debug.Log($"{enemy.NickName} killed {photonView.Controller.NickName}");
-                //enemy.SetScore(enemy.GetScore() + 1);
+                
+                SetPointsForDeath();
+                photonView.RPC("OnScoresUpdate", RpcTarget.All);
+                SetMinHP();
+            }
 
+            void SetPointsForDeath()
+            {
                 var enemyKills = (int)enemy.CustomProperties["Kills"];
                 enemy.CustomProperties["Kills"] = ++enemyKills;
                 enemy.SetCustomProperties(enemy.CustomProperties);
@@ -113,9 +113,6 @@ public class PlayerHP : MonoBehaviourPun
                 var currentPlayerDeaths = (int)photonView.Controller.CustomProperties["Deaths"];
                 photonView.Controller.CustomProperties["Deaths"] = ++currentPlayerDeaths;
                 photonView.Controller.SetCustomProperties(photonView.Controller.CustomProperties);
-                
-                photonView.RPC("OnScoresUpdate", RpcTarget.All);
-                SetMinHP();
             }
         }
     }

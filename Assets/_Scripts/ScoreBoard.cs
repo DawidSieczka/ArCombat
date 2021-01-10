@@ -14,7 +14,7 @@ public class ScoreBoard : MonoBehaviour
 
     private List<PlayerScores> _playersScores = new List<PlayerScores>();
 
-    private void Start()
+    public void Init()
     {
         if (PhotonNetwork.IsConnected)
         {
@@ -23,12 +23,18 @@ public class ScoreBoard : MonoBehaviour
                 var playerScoreLabel = Instantiate(_playerScoresPrefab, _scoreBoard.transform);
                 var playerScoreDetails = playerScoreLabel.GetComponent<PlayerScores>();
 
-                InitPlayerLabel(player, playerScoreDetails);
-                UpdateScoreDisplay(player, playerScoreDetails);
-
-                _playersScores.Add(playerScoreDetails);
+                SetupPlayerScores(player, playerScoreDetails);
             }
         }
+    }
+
+    private void SetupPlayerScores(Player player, PlayerScores playerScoreDetails)
+    {
+        InitPlayerLabel(player, playerScoreDetails);
+        UpdateScoreDisplay(player, playerScoreDetails);
+
+        if (!_playersScores.Contains(playerScoreDetails))
+            _playersScores.Add(playerScoreDetails);
     }
 
     private void InitPlayerLabel(Player player, PlayerScores playerScoreDetails)
@@ -48,7 +54,12 @@ public class ScoreBoard : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Scores not set !");
+            Debug.LogWarning("Scores not set! Init Kills and Deaths properties before setting them up");
+
+            player.CustomProperties.Add("Kills", 0);
+            player.CustomProperties.Add("Deaths", 0);
+
+            SetupPlayerScores(player, playerScoreDetails);
         }
     }
 

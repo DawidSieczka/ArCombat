@@ -7,19 +7,19 @@ public class PlayerScoresManager : MonoBehaviourPun
 
     private void Awake()
     {
-        photonView.Controller.CustomProperties.Add("Kills", 0);
-        photonView.Controller.CustomProperties.Add("Deaths", 0);
-
         _scoreBoard = GameObject.FindGameObjectWithTag("UI").GetComponent<ScoreBoard>();
+
+        if (photonView.IsMine)
+        {
+            _scoreBoard.Init();
+        }
     }
 
     [PunRPC]
     public void OnScoresUpdate()
     {
-        if (photonView.IsMine)
-        {
-            _scoreBoard.UpdateScores();
-        }
+        Debug.Log($"{photonView.Controller.NickName} updates scoreboard");
+        _scoreBoard.UpdateScores();
     }
 
 }
