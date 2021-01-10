@@ -27,6 +27,7 @@ public class PlayerAim : MonoBehaviourPun
         //spawn _aimingLine
         if (base.photonView.IsMine)
         {
+            print($"My view id is: {base.photonView.ViewID}");
             _aimingLine = Instantiate(_aimingLinePrefab, Vector3.zero, Quaternion.identity);
             _aimingLineShaderRenderer = _aimingLine.GetComponent<Renderer>();
             _sideDetector = GetComponent<SideDetector>();
@@ -91,12 +92,16 @@ public class PlayerAim : MonoBehaviourPun
             var rayDistance = Vector3.Distance(pointingDirection, transform.position);
             var isHit = Physics.Raycast(transform.position, raycastDirection, out RaycastHit hit, rayDistance);
 
+           
             if (isHit && isHittingCorrectObjects(hit))
             {
+                    Debug.Log($"Hitting object: {hit.collider.gameObject.name}");
+
                 aimedTargetPosition = hit.point;
             }
             else
             {
+               
                 aimedTargetPosition = pointingDirection;
             }
         }

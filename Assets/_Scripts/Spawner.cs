@@ -13,15 +13,10 @@ public class Spawner : MonoBehaviourPun
     [SerializeField]
     private GameObject Player;
 
-    public GameObject testobj;
-
     private const byte Spawns_Event = 5;
 
     private void Start()
     {
-        debug();
-
-
         SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
         if (PhotonNetwork.IsMasterClient)
         {
@@ -31,13 +26,7 @@ public class Spawner : MonoBehaviourPun
             StartCoroutine(ExcludeSpawnPointTemporarily(SpawnPoints[anySpawn]));
         }
     }
-    void debug()
-    {
-        Debug.Log("xxxxxxxxx");
-        if (PhotonNetwork.IsMasterClient)
-            Debug.Log($"yyyyyyyy: {PhotonNetwork.IsMasterClient}");
-
-    }
+    
     private void OnEnable()
     {
         PhotonNetwork.NetworkingClient.EventReceived += OnSpawn_EventReceived;
