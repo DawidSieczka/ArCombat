@@ -369,6 +369,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SingletonReferences
       objectReference: {fileID: 0}
+    - target: {fileID: 7015330010256177423, guid: cb85e4570b46082469369dee831e59af,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb85e4570b46082469369dee831e59af, type: 3}
 --- !u!1001 &8895175295259352423

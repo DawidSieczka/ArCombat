@@ -1,6 +1,8 @@
 ﻿using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerHP : MonoBehaviourPun
@@ -54,7 +56,14 @@ public class PlayerHP : MonoBehaviourPun
     {
         _hp = 0;
         _hpBar.transform.localScale = new Vector3(0, _hpBar.transform.localScale.y, _hpBar.transform.localScale.z);
-        this.gameObject.SetActive(false);
+        //photonView.RPC("HidePlayerModel", RpcTarget.All, photonView.Controller.ActorNumber);
+        StartCoroutine(SetAsDead());
+    }
+
+    [PunRPC]
+    public void HidePlayerModel(int id)
+    {
+        FindObjectsOfType<PlayerHP>().Where(x => x.photonView.Controller.ActorNumber == id).FirstOrDefault().SetAsDead();
     }
 
     private void Update()
@@ -115,5 +124,17 @@ public class PlayerHP : MonoBehaviourPun
                 photonView.Controller.SetCustomProperties(photonView.Controller.CustomProperties);
             }
         }
+    }
+
+    private IEnumerator SetAsDead()
+    {
+        transform.position = new Vector3(8.7f, -20.4f, 7.45f);
+        var rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        yield return new WaitForSeconds(2);
+        rb.useGravity = true;
+        FindObjectOfType<Spawner>().MoveObjectToSpawner(gameObject);
+        SetMaxHP();
+
     }
 }
