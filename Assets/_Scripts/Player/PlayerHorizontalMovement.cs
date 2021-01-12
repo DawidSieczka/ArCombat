@@ -15,9 +15,12 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
     [SerializeField] [Range(0, 1)] float LerpConstant;
     private void Start()
     {
-        _sideDetector = GameObject.FindObjectOfType<SideDetector>();
-        _playerColliders = GetComponent<PlayerColliders>();
-        rb = GetComponent<Rigidbody>();
+        if (photonView.IsMine)
+        {
+            _sideDetector = FindObjectOfType<SideDetector>();
+            _playerColliders = GetComponent<PlayerColliders>();
+            rb = GetComponent<Rigidbody>();
+        }
     }
 
     private void CheckCameraAndPlayerDirection()
@@ -33,9 +36,6 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
         if (base.photonView.IsMine)
         {
             CheckCameraAndPlayerDirection();
-            print($"vectordepth: {GetVectorDepthDirection()}");
-            print($"direction: {direction}");
-            print($"SideDetector: {_sideDetector.CurrentSide}");
             transform.position += GetVectorDepthDirection() * speedMultiplayer * direction * playerSpeed * Time.deltaTime; 
         }
     }

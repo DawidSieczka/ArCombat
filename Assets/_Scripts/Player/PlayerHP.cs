@@ -1,33 +1,13 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
+using System.Collections;
+using System.Linq;
+using UnityEngine;
 
-public class PlayerHP : MonoBehaviour
+public class PlayerHP : MonoBehaviourPun
 {
-    private int _hp;
-
-    public int HP
-    {
-        get
-        {
-            return _hp;
-        }
-        set
-        {
-            if (value > 100)
-            {
-                SetMaxHP();
-                _hp = 100;
-            }
-            else if (value < 0)
-            {
-                SetMinHP();
-                _hp = 0;
-            }
-            else
-            {
-                _hp = value;
-            }
-        }
-    }
+    private int _hp = 100;
 
     private GameObject _hpBar;
 
@@ -39,51 +19,122 @@ public class PlayerHP : MonoBehaviour
 
     public void SubtractHP(int damage)
     {
-        if (HP > 0)
+        if (base.photonView.IsMine)
         {
-            HP -= damage;
+            Debug.Log($"Player: {gameObject.name} | {this.gameObject.tag}, get hit: {damage}");
+
+            _hp -= damage;
             var percentageOfDamage = ((float)damage / 100);
             _hpBar.transform.localScale -= new Vector3(percentageOfDamage, 0, 0);
-        }
-        if (HP <= 0)
-        {
-            SetMinHP();
         }
     }
 
     public void IncreaseHP(int health)
     {
-        if (HP < 100)
+        if (base.photonView.IsMine)
         {
-            HP += health;
-            var percentageOfHealth = ((float)health / 100);
-            _hpBar.transform.localScale += new Vector3(percentageOfHealth, 0, 0);
-        }
-        if (HP >= 100)
-        {
-            SetMaxHP();
+            if (_hp < 100)
+            {
+                _hp += health;
+                var percentageOfHealth = ((float)health / 100);
+                _hpBar.transform.localScale += new Vector3(percentageOfHealth, 0, 0);
+            }
+            if (_hp >= 100)
+            {
+                SetMaxHP();
+            }
         }
     }
 
     public void SetMaxHP()
     {
-        HP = 100;
+        _hp = 100;
         _hpBar.transform.localScale = new Vector3(1, _hpBar.transform.localScale.y, _hpBar.transform.localScale.z);
     }
 
     public void SetMinHP()
     {
-        HP = 0;
+        _hp = 0;
         _hpBar.transform.localScale = new Vector3(0, _hpBar.transform.localScale.y, _hpBar.transform.localScale.z);
-        this.gameObject.SetActive(false);
+        //photonView.RPC("HidePlayerModel", RpcTarget.All, photonView.Controller.ActorNumber);
+        StartCoroutine(SetAsDead());
+    }
+
+    [PunRPC]
+    public void HidePlayerModel(int id)
+    {
+        FindObjectsOfType<PlayerHP>().Where(x => x.photonView.Controller.ActorNumber == id).FirstOrDefault().SetAsDead();
     }
 
     private void Update()
     {
         //Debug
+        if (photonView.IsMine)
+        {
+            DebugActions();
+        }
+    }
+
+    private void DebugActions()
+    {
         if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.X))
         {
             SubtractHP(10);
         }
+        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.C))
+        {
+            print(photonView.Controller.GetScore());
+            IncreaseHP(10);
+        }
+    }
+
+    [PunRPC]
+    public void GetHit(int damage, Player enemy)
+    {
+        if (photonView.IsMine)
+        {
+            Debug.Log($"The player {photonView.ControllerActorNr} got hit with dmg: {damage} from player: {enemy.ActorNumber}");
+            if (_hp > 0)
+            {
+                SubtractHP(damage);
+            }
+            else
+            {
+                Debug.LogWarning("Player is not alive but got hit...");
+                return;
+            }
+
+            if (_hp <= 0)
+            {
+                Debug.Log($"{enemy.NickName} killed {photonView.Controller.NickName}");
+                
+                SetPointsForDeath();
+                photonView.RPC("OnScoresUpdate", RpcTarget.All);
+                SetMinHP();
+            }
+
+            void SetPointsForDeath()
+            {
+                var enemyKills = (int)enemy.CustomProperties["Kills"];
+                enemy.CustomProperties["Kills"] = ++enemyKills;
+                enemy.SetCustomProperties(enemy.CustomProperties);
+
+                var currentPlayerDeaths = (int)photonView.Controller.CustomProperties["Deaths"];
+                photonView.Controller.CustomProperties["Deaths"] = ++currentPlayerDeaths;
+                photonView.Controller.SetCustomProperties(photonView.Controller.CustomProperties);
+            }
+        }
+    }
+
+    private IEnumerator SetAsDead()
+    {
+        transform.position = new Vector3(8.7f, -20.4f, 7.45f);
+        var rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        yield return new WaitForSeconds(2);
+        rb.useGravity = true;
+        FindObjectOfType<Spawner>().MoveObjectToSpawner(gameObject);
+        SetMaxHP();
+
     }
 }

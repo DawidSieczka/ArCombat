@@ -13,31 +13,27 @@ public class Spawner : MonoBehaviourPun
     [SerializeField]
     private GameObject Player;
 
-    public GameObject testobj;
-
     private const byte Spawns_Event = 5;
 
     private void Start()
     {
-        debug();
-
-
         SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
         if (PhotonNetwork.IsMasterClient)
         {
-            InvokeSpawning();
-            var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count());
-            PhotonNetwork.RaiseEvent(Spawns_Event, SpawnPoints[anySpawn].transform.position, RaiseEventOptions.Default, SendOptions.SendReliable);
-            StartCoroutine(ExcludeSpawnPointTemporarily(SpawnPoints[anySpawn]));
+            //InvokeSpawning();
+            Debug.Log(PhotonNetwork.PlayerList.Length);
+            foreach(var player in PhotonNetwork.PlayerList)
+            {
+                Debug.Log($"player thats going to spawn {player.NickName}");
+                var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count());
+                RaiseEventOptions rso = new RaiseEventOptions { TargetActors = new int[] { player.ActorNumber } };
+                PhotonNetwork.RaiseEvent(Spawns_Event, SpawnPoints[anySpawn].transform.position, rso, SendOptions.SendReliable);
+                StartCoroutine(ExcludeSpawnPointTemporarily(SpawnPoints[anySpawn]));
+            }
         }
     }
-    void debug()
-    {
-        Debug.Log("xxxxxxxxx");
-        if (PhotonNetwork.IsMasterClient)
-            Debug.Log($"yyyyyyyy: {PhotonNetwork.IsMasterClient}");
 
-    }
+    
     private void OnEnable()
     {
         PhotonNetwork.NetworkingClient.EventReceived += OnSpawn_EventReceived;
@@ -55,9 +51,10 @@ public class Spawner : MonoBehaviourPun
             InvokeSpawning((Vector3)data.CustomData);
         }
     }
-
+    
     public void InvokeSpawning(Vector3 spawnPointCoordinates)
     {
+        print("asdasdsafasdasd");
         MasterManager.NetworkInstantiate(Player, spawnPointCoordinates, Player.transform.rotation);
     }
 
