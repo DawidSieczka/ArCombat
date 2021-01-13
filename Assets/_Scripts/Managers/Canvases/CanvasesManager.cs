@@ -66,11 +66,13 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
         _leaveButton.SetActive(false);
         _canvasRoomLobby.SetActive(false);
         _canvasRooms.SetActive(true);
+        _canvasInputName.SetActive(false);
     }
 
     public override void OnJoinedRoom()
     {
         _createRoomButton.SetActive(false);
+        _canvasInputName.SetActive(false);
         _playButton.SetActive(true);
         _leaveButton.SetActive(true);
         _canvasRoomLobby.SetActive(true);
