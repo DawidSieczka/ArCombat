@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreBoard : MonoBehaviour
 {
@@ -27,7 +28,16 @@ public class ScoreBoard : MonoBehaviour
             }
         }
     }
+    public void SelectOwnerScores(int playerId)
+    {
+        var ownersScores = _playersScores.Where(x => x.PlayerID == playerId).FirstOrDefault();
+        var scoresUIBackgrounds = ownersScores.gameObject.GetComponentsInChildren<Image>();
 
+        foreach (var element in scoresUIBackgrounds)
+        {
+            element.color = new Color(0.614171f,1, 0.2877358f);
+        }
+    }
     private void SetupPlayerScores(Player player, PlayerScores playerScoreDetails)
     {
         InitPlayerLabel(player, playerScoreDetails);
@@ -72,5 +82,6 @@ public class ScoreBoard : MonoBehaviour
             UpdateScoreDisplay(player, playerScoreDetails);
             Debug.Log($"Player: {player.NickName} scores updated");
         }
+
     }
 }

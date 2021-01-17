@@ -14,6 +14,9 @@ public class PlayerScores : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI PlayerNameTxt;
 
+    public int Kills = 0;
+    public int Deaths = 0;
+
     public void SetPlayerNameInLabel(string playerName)
     {
         PlayerNameTxt.text = playerName;
@@ -22,6 +25,8 @@ public class PlayerScores : MonoBehaviour
 
     public void UpdateScoresDisplay(int kills, int deaths)
     {
+        Kills = kills;
+        Deaths = deaths;
         KillsTxt.text = kills.ToString();
         DeathsTxt.text = deaths.ToString();
     }

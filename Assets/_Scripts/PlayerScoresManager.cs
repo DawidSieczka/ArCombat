@@ -12,6 +12,7 @@ public class PlayerScoresManager : MonoBehaviourPun
         if (photonView.IsMine)
         {
             _scoreBoard.Init();
+            _scoreBoard.SelectOwnerScores(photonView.Controller.ActorNumber);
         }
     }
 
