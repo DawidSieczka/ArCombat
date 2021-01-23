@@ -10,7 +10,7 @@ public class PlayerShoot : MonoBehaviourPun
     private ButtonEvent _shootButton;
     public GameObject bullet;
     private TextMeshProUGUI ammoText;
-    private int _gunMagazine = 64;
+    private int _gunMagazine = 128;
     private int _oneMagazineSet = 32; //this is amount of shootable ammount of the gun
     private int _ammoAmount = 32;
     private bool isReadToShoot = true;
@@ -51,9 +51,9 @@ public class PlayerShoot : MonoBehaviourPun
                     isReadToShoot = false;
                     Reload();
                 }
-                var bulletInstance = MasterManager.NetworkInstantiate(bullet, transform.position, Quaternion.identity);
+                var bulletInstance = FindObjectOfType<ObjectPoolManager>().SpawnFromPool(NetworkObjectPoolTag.Bullet, transform.position, Quaternion.identity);
                 var player = base.photonView.Controller;
-                 bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value, player);
+                bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value, player);
                 SetAmmo();
             }
         }

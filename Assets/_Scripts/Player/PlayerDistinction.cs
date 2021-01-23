@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
 public class PlayerDistinction : MonoBehaviourPun
@@ -11,12 +12,12 @@ public class PlayerDistinction : MonoBehaviourPun
         if (base.photonView.IsMine)
         {
             transform.tag = Tag.Player.ToString();
-            GetComponentInChildren<Light>().color = playerColor;
+            GetComponentInChildren<TextMeshPro>().color = playerColor;
         }
         else
         {
             transform.tag = Tag.Enemy.ToString();
-            GetComponentInChildren<Light>().color = enemyColor;
+            GetComponentInChildren<TextMeshPro>().color = enemyColor;
         }
     }
 }

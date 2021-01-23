@@ -25,6 +25,7 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
 
     private void CheckCameraAndPlayerDirection()
     {
+        ///fix the _sideDetector
         if (_sideDetector.CurrentSide == side.back)
             direction = -1;
         else

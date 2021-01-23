@@ -1,16 +1,16 @@
 ﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CurrentRoomManager : MonoBehaviourPunCallbacks
 {
-
+    int sceneArenaId = 1;
+    int sceneMenuId = 0;
     public void OnClick_StartPlaying()
     {
-        //TODO Load map based on scene id - needed menu to choice map for current room
-        int sceneArenaId = 1;
-
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.CurrentRoom.IsVisible = false;
@@ -21,6 +21,33 @@ public class CurrentRoomManager : MonoBehaviourPunCallbacks
 
     public void OnClick_LeaveRoom()
     {
-        PhotonNetwork.LeaveRoom();
+        try
+        {
+            //PhotonNetwork.CurrentRoom.IsVisible = true;
+            //PhotonNetwork.CurrentRoom.IsOpen = true;
+            PhotonNetwork.LeaveRoom();
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError($"2 Leaving room error catched: {ex.Message}");
+        }
     }
+
+    public override void OnLeftRoom()
+    {
+        try
+        {
+            if (SceneManager.GetActiveScene().buildIndex == 1)
+            {
+                SceneManager.LoadScene(sceneMenuId);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"3 Leaving room error catched: {ex.Message}");
+        }
+
+        base.OnLeftRoom();
+    }
+
 }

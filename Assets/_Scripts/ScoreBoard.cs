@@ -3,8 +3,9 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ScoreBoard : MonoBehaviour
+public class ScoreBoard : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private GameObject _playerScoresPrefab;
@@ -14,17 +15,36 @@ public class ScoreBoard : MonoBehaviour
 
     private List<PlayerScores> _playersScores = new List<PlayerScores>();
 
+    private MatchRules _matchRules;
+
     public void Init()
     {
+        _matchRules = GetComponent<MatchRules>();
         if (PhotonNetwork.IsConnected)
         {
             foreach (var player in PhotonNetwork.PlayerList)
             {
-                var playerScoreLabel = Instantiate(_playerScoresPrefab, _scoreBoard.transform);
-                var playerScoreDetails = playerScoreLabel.GetComponent<PlayerScores>();
-
-                SetupPlayerScores(player, playerScoreDetails);
+                InstantiatePlayerLabel(player);
             }
+        }
+    }
+
+    private void InstantiatePlayerLabel(Player player)
+    {
+        var playerScoreLabel = Instantiate(_playerScoresPrefab, _scoreBoard.transform);
+        var playerScoreDetails = playerScoreLabel.GetComponent<PlayerScores>();
+
+        SetupPlayerScores(player, playerScoreDetails);
+    }
+
+    public void SelectOwnerScores(int playerId)
+    {
+        var ownersScores = _playersScores.Where(x => x.PlayerID == playerId).FirstOrDefault();
+        var scoresUIBackgrounds = ownersScores.gameObject.GetComponentsInChildren<Image>();
+
+        foreach (var element in scoresUIBackgrounds)
+        {
+            element.color = new Color(0.614171f, 1, 0.2877358f);
         }
     }
 
@@ -71,6 +91,30 @@ public class ScoreBoard : MonoBehaviour
             var playerScoreDetails = _playersScores.Where(x => x.PlayerID == player.ActorNumber).FirstOrDefault();
             UpdateScoreDisplay(player, playerScoreDetails);
             Debug.Log($"Player: {player.NickName} scores updated");
+            if (playerScoreDetails.Kills >= 10)
+            {
+                _matchRules.EnableWonScreen(player.NickName);
+            }
         }
+    }
+
+    public void RemovePlayerLabel(Player player)
+    {
+        var scoresEntity = _playersScores.FirstOrDefault(x => x.PlayerID == player.ActorNumber);
+        _playersScores.Remove(scoresEntity);
+        var label = _scoreBoard.transform.GetComponentsInChildren<PlayerScores>().FirstOrDefault(x => x.PlayerID == player.ActorNumber);
+
+        Destroy(label.gameObject);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        RemovePlayerLabel(otherPlayer);
+        base.OnPlayerLeftRoom(otherPlayer);
+    }
+
+    public override void OnPlayerEnteredRoom(Player player)
+    {
+        InstantiatePlayerLabel(player);
     }
 }

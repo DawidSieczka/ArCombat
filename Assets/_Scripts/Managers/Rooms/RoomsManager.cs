@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,11 +16,22 @@ public class RoomsManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private PlayerListing _playerListingPrefab;
 
-    private static int num = 0;
-    private static string _newRoomName = $"(Eu) room {++num}";
+    private string _currentRoom;
     private List<RoomListing> _roomListings = new List<RoomListing>();
     private List<PlayerListing> _playerListings = new List<PlayerListing>();
     private RoomInfo newCreatedRoom;
+
+    private string GetNewRoomName()
+    {
+        string roomName;
+        do
+        {
+            roomName = $"room {Random.RandomRange(0, 1000)}";
+        } while (_roomListings.Any(x=>x.RoomName == roomName));
+        _currentRoom = roomName;
+        return roomName;
+    }
+
 
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -55,7 +67,9 @@ public class RoomsManager : MonoBehaviourPunCallbacks
 
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 4;
-        PhotonNetwork.JoinOrCreateRoom(_newRoomName, options, TypedLobby.Default);
+        print($"1: {_currentRoom} - should be empty");
+        PhotonNetwork.JoinOrCreateRoom(GetNewRoomName(), options, TypedLobby.Default);
+        print($"2: {_currentRoom}");
     }
 
     public override void OnCreatedRoom()
@@ -65,13 +79,14 @@ public class RoomsManager : MonoBehaviourPunCallbacks
         var listing = Instantiate(_roomListingPrefab, _roomsContent);
         if (listing != null)
         {
-            listing.SetRoomName(_newRoomName);
+            print($"3: {_currentRoom}");
+            listing.RoomName = _currentRoom;
+            print($"4: {_currentRoom}");
             _roomListings.Add(listing);
             listing.GetComponent<Button>().interactable = false;
         }
         Debug.Log("Room added to list");
 
-        //OnRoomListUpdate(PhotonNetwork)
     }
 
     private void GetCurrentRoomPlayers()
@@ -159,7 +174,8 @@ public class RoomsManager : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    print("asdasdasd");
+
+                    print("dziwna sprawa !!!!!!!!!!!!!!!!!1");
                     //todo
                 }
             }

@@ -35,8 +35,8 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        print("Connected to master");
-        print("Player nick: " + PhotonNetwork.LocalPlayer.NickName);
+        Debug.Log("Connected to master");
+        Debug.Log("Player nick: " + PhotonNetwork.LocalPlayer.NickName);
         if (!PhotonNetwork.InLobby)
             PhotonNetwork.JoinLobby();
     }
@@ -48,7 +48,7 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
             Debug.LogError("Name is too short");
             return;
         }
-        print("Connecting to master...");
+        Debug.Log("Connecting to master...");
         _canvasInputName.SetActive(false);
         //PhotonNetwork.SendRate = 40;
         //PhotonNetwork.SerializationRate
@@ -60,17 +60,20 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        print("Joined to lobby");
+        Debug.Log("Joined to lobby");
         _createRoomButton.SetActive(true);
         _playButton.SetActive(false);
         _leaveButton.SetActive(false);
         _canvasRoomLobby.SetActive(false);
         _canvasRooms.SetActive(true);
+        _canvasInputName.SetActive(false);
     }
 
     public override void OnJoinedRoom()
     {
+        Debug.Log("Joined room");
         _createRoomButton.SetActive(false);
+        _canvasInputName.SetActive(false);
         _playButton.SetActive(true);
         _leaveButton.SetActive(true);
         _canvasRoomLobby.SetActive(true);
@@ -78,6 +81,7 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        Debug.Log("Left room");
         _createRoomButton.SetActive(true);
         _playButton.SetActive(false);
         _leaveButton.SetActive(false);
@@ -86,7 +90,7 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        print("Disconnected from server for reason: " + cause.ToString());
+        Debug.Log("Disconnected from server for reason: " + cause.ToString());
         base.OnDisconnected(cause);
         _canvasInputName.SetActive(false);
     }

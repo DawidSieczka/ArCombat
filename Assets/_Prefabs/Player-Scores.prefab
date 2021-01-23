@@ -54,6 +54,8 @@ MonoBehaviour:
   KillsTxt: {fileID: 5807927573949085060}
   DeathsTxt: {fileID: 5807927574050698389}
   PlayerNameTxt: {fileID: 5807927573416969031}
+  Kills: 0
+  Deaths: 0
 --- !u!1 &5807927572664277491
 GameObject:
   m_ObjectHideFlags: 0
