@@ -47,6 +47,7 @@ public class PlayerJump : MonoBehaviourPun
             _particle.Play();
             _isReadyToJump = false;
             //transform.position += Vector3.up * jumpForce * Time.deltaTime;
+
             _rb.AddForce(Vector3.up * jumpForce,ForceMode.Impulse);
             //transform.position = transform.TransformDirection(new Vector3(transform.position.x, jumpForce, transform.position.z));
 

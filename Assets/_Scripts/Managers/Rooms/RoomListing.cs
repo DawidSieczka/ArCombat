@@ -6,21 +6,34 @@ using UnityEngine;
 
 public class RoomListing : MonoBehaviour
 {
-    public string RoomName { get; set; }
+    
+    private string roomName;
+
+    public string RoomName
+    {
+        get { return roomName; }
+        set 
+        {
+            if (text != null)
+                text.text = value;
+            roomName = value; 
+        }
+
+    }
 
     public int RoomCount { get; set; }
     private TMPro.TextMeshProUGUI text;
     private void Awake()
     {
-        RoomCount = GetPlayersCount(RoomName);
+        RoomCount = GetPlayersCount(roomName);
         text = GetComponentInChildren<TMPro.TextMeshProUGUI>();
     }
 
-    public void SetRoomName(string name)
-    {
-        RoomName = name;
-        text.text = name;
-    }
+    //public void SetRoomName(string name)
+    //{
+    //    RoomName = name;
+    //    text.text = name;
+    //}
 
     public void Destroy()
     {
@@ -53,6 +66,6 @@ public class RoomListing : MonoBehaviour
 
     public void OnClick_JoinRoom()
     {
-        PhotonNetwork.JoinRoom(RoomName);
+        PhotonNetwork.JoinRoom(roomName);
     }
 }

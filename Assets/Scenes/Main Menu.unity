@@ -302,6 +302,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1216248321 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7015330010256177423, guid: cb85e4570b46082469369dee831e59af,
+    type: 3}
+  m_PrefabInstance: {fileID: 7015330009895752380}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1216248322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216248321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6acaebbcb95027499b838651b98c172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7015330009895752380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -309,6 +327,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7015330010256177416, guid: cb85e4570b46082469369dee831e59af,
+        type: 3}
+      propertyPath: _masterRPCCaller
+      value: 
+      objectReference: {fileID: 1216248322}
     - target: {fileID: 7015330010256177417, guid: cb85e4570b46082469369dee831e59af,
         type: 3}
       propertyPath: m_LocalPosition.x

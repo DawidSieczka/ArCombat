@@ -10,7 +10,7 @@ public class PlayerShoot : MonoBehaviourPun
     private ButtonEvent _shootButton;
     public GameObject bullet;
     private TextMeshProUGUI ammoText;
-    private int _gunMagazine = 64;
+    private int _gunMagazine = 128;
     private int _oneMagazineSet = 32; //this is amount of shootable ammount of the gun
     private int _ammoAmount = 32;
     private bool isReadToShoot = true;
