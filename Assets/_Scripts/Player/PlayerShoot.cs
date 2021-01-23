@@ -51,9 +51,9 @@ public class PlayerShoot : MonoBehaviourPun
                     isReadToShoot = false;
                     Reload();
                 }
-                var bulletInstance = MasterManager.NetworkInstantiate(bullet, transform.position, Quaternion.identity);
+                var bulletInstance = FindObjectOfType<ObjectPoolManager>().SpawnFromPool(NetworkObjectPoolTag.Bullet, transform.position, Quaternion.identity);
                 var player = base.photonView.Controller;
-                 bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value, player);
+                bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value, player);
                 SetAmmo();
             }
         }
