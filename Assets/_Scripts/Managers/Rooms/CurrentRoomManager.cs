@@ -23,8 +23,6 @@ public class CurrentRoomManager : MonoBehaviourPunCallbacks
     {
         try
         {
-            //PhotonNetwork.CurrentRoom.IsVisible = true;
-            //PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.LeaveRoom();
         }
         catch(Exception ex)

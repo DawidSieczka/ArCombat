@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using Assets._Scripts;
+using Photon.Pun;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -14,13 +15,16 @@ public class PlayerShoot : MonoBehaviourPun
     private int _oneMagazineSet = 32; //this is amount of shootable ammount of the gun
     private int _ammoAmount = 32;
     private bool isReadToShoot = true;
-
+    private ObjectPoolManager _objectPoolManager;
+    private ShootingMetadata _shootingMetadata;
     private void Start()
     {
         _playerAim = GetComponent<PlayerAim>();
         _shootButton = FindObjectOfType<ButtonEvent>();
         _shootButton.OnShoot.AddListener(Shoot);
         ammoText = GameObject.FindGameObjectWithTag("AmmoInfo").GetComponent<TextMeshProUGUI>();
+        _objectPoolManager = FindObjectOfType<ObjectPoolManager>();
+        _shootingMetadata = new ShootingMetadata();
     }
 
     private void Update()
@@ -51,9 +55,12 @@ public class PlayerShoot : MonoBehaviourPun
                     isReadToShoot = false;
                     Reload();
                 }
-                var bulletInstance = FindObjectOfType<ObjectPoolManager>().SpawnFromPool(NetworkObjectPoolTag.Bullet, transform.position, Quaternion.identity);
-                var player = base.photonView.Controller;
-                bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value, player);
+                var player = photonView.Controller;
+                _shootingMetadata.Player = player;
+                _shootingMetadata.Direction = _aimedPoint.Value;
+
+                var bulletInstance = _objectPoolManager.SpawnFromPool(NetworkObjectPoolTag.Bullet, transform.position, Quaternion.identity,_shootingMetadata);
+                //bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value, player);
                 SetAmmo();
             }
         }
