@@ -1,27 +1,54 @@
 ﻿using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 
 public class HPPointBehaviour : MonoBehaviourPun
 {
-    public int IncreasedHP { get; set; }
+    public int IncreasedHP { get; set; } = 25;
+    private Collider collider;
+    private MeshRenderer meshRenderer;
 
-    private GameObject hpPivotCorrector;
-
-    private void Start()
+    private void Awake()
     {
-        //hpPivotCorrector = GetComponentInParent<Transform>();
-        IncreasedHP += 25;
+        collider = GetComponent<Collider>();
+        meshRenderer = GetComponent<MeshRenderer>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(Tag.Player.ToString()) && base.photonView.IsMine)
+        if (other.gameObject.CompareTag(Tag.Player.ToString()) || other.gameObject.CompareTag(Tag.Enemy.ToString()))
         {
-            if(other.gameObject.CompareTag(Tag.Player.ToString()))
+            if (other.gameObject.CompareTag(Tag.Player.ToString()))
                 other.GetComponent<PlayerHP>().IncreaseHP(IncreasedHP);
-            
-            gameObject.SetActive(false);
-            //hpPivotCorrector.SetActive(false);
+
+            OnObjectDestroy();
         }
+        else if (other.gameObject.CompareTag(Tag.Bullet.ToString()))
+        {
+            OnObjectDestroy();
+        }
+    }
+
+    private void ComponentsEnabled(bool state)
+    {
+        collider.enabled = state;
+        meshRenderer.enabled = state;
+    }
+
+    private void OnObjectSpawn()
+    {
+        ComponentsEnabled(true);
+    }
+
+    private void OnObjectDestroy()
+    {
+        ComponentsEnabled(false);
+        StartCoroutine(SpawnObjectAfterTime());
+    }
+
+    private IEnumerator SpawnObjectAfterTime()
+    {
+        yield return new WaitForSeconds(5f);
+        OnObjectSpawn();
     }
 }

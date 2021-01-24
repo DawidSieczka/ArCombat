@@ -1,49 +1,33 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DeadlyGround : MonoBehaviour
 {
     private GameObject _player;
     private bool isPlayerBelowGround;
 
-    private void Start()
-    {
-        StartCoroutine(LatePlayerInit());
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag(Tag.Player.ToString()))
         {
-            GameObject.FindGameObjectWithTag(Tag.Spawner.ToString()).GetComponent<Spawner>().MoveObjectToSpawner(other.gameObject);
+            GameObject.FindGameObjectWithTag(Tag.Spawner.ToString()).GetComponent<PlayersSpawner>().MoveObjectToSpawner(other.gameObject);
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if (!isPlayerBelowGround)
+        InitIfDoesntExist();
+        if (_player != null)
         {
-            if (_player != null)
+            if (_player.transform.position.y < (transform.position.y - 20) || _player.transform.position.y > 20)
             {
-                if (_player.transform.position.y < transform.position.y || _player.transform.position.y > 20)
-                {
-                    StartCoroutine(CorrectPlayerPositionToSpawner());
-                }
+                GameObject.FindGameObjectWithTag(Tag.Spawner.ToString()).GetComponent<PlayersSpawner>().MoveObjectToSpawner(_player);
             }
         }
     }
 
-    private IEnumerator LatePlayerInit()
+    private void InitIfDoesntExist()
     {
-        yield return new WaitForSeconds(3);
-        _player = GameObject.FindGameObjectWithTag(Tag.Player.ToString());
-    }
-
-    private IEnumerator CorrectPlayerPositionToSpawner()
-    {
-        isPlayerBelowGround = true;
-        yield return new WaitForSeconds(4);
-        GameObject.FindGameObjectWithTag(Tag.Spawner.ToString()).GetComponent<Spawner>().MoveObjectToSpawner(_player);
-        isPlayerBelowGround = false;
+        if (_player == null)
+            _player = GameObject.FindGameObjectWithTag(Tag.Player.ToString());
     }
 }

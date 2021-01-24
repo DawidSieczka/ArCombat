@@ -33,7 +33,7 @@ public class PlayerShoot : MonoBehaviourPun
             _aimedPoint = _playerAim.aimedTargetPosition;
     }
 
-    private void SetAmmo()
+    private void UpdateAmmoText()
     {
         ammoText.text = $"{_ammoAmount}/{_gunMagazine}";
     }
@@ -58,10 +58,8 @@ public class PlayerShoot : MonoBehaviourPun
                 var player = photonView.Controller;
                 _shootingMetadata.Player = player;
                 _shootingMetadata.Direction = _aimedPoint.Value;
-
-                var bulletInstance = _objectPoolManager.SpawnFromPool(NetworkObjectPoolTag.Bullet, transform.position, Quaternion.identity,_shootingMetadata);
-                //bulletInstance.GetComponent<BulletBehaviour>().InvokeShoot(_aimedPoint.Value, player);
-                SetAmmo();
+                _objectPoolManager.SpawnFromPool(NetworkObjectPoolTag.Bullet, transform.position, Quaternion.identity,_shootingMetadata);
+                UpdateAmmoText();
             }
         }
     }

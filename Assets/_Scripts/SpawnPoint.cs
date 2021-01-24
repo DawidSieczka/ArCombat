@@ -4,11 +4,11 @@ public class SpawnPoint : MonoBehaviour
 {
     public bool isOccupied { get; set; }
 
-    private Spawner _spawner;
+    private PlayersSpawner _spawner;
 
     private void Awake()
     {
-        _spawner = GetComponentInParent<Spawner>();
+        _spawner = GetComponentInParent<PlayersSpawner>();
     }
 
     private void OnTriggerStay(Collider other)

@@ -67,9 +67,7 @@ public class RoomsManager : MonoBehaviourPunCallbacks
 
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 4;
-        print($"1: {_currentRoom} - should be empty");
         PhotonNetwork.JoinOrCreateRoom(GetNewRoomName(), options, TypedLobby.Default);
-        print($"2: {_currentRoom}");
     }
 
     public override void OnCreatedRoom()
@@ -79,14 +77,11 @@ public class RoomsManager : MonoBehaviourPunCallbacks
         var listing = Instantiate(_roomListingPrefab, _roomsContent);
         if (listing != null)
         {
-            print($"3: {_currentRoom}");
             listing.RoomName = _currentRoom;
-            print($"4: {_currentRoom}");
             _roomListings.Add(listing);
             listing.GetComponent<Button>().interactable = false;
         }
         Debug.Log("Room added to list");
-
     }
 
     private void GetCurrentRoomPlayers()

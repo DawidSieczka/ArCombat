@@ -48,8 +48,7 @@ public class ObjectPoolManager : MonoBehaviourPun
             for (int i = 0; i < pool.size; i++)
             {
                 var spawnedObject = MasterManager.NetworkInstantiate(pool.prefab, transform.position, Quaternion.identity);
-
-                spawnedObject.name = spawnedObject.GetComponent<PhotonView>().ViewID.ToString();
+                
                 poolQueue.Enqueue(spawnedObject);
                 spawnedObject.GetComponent<GameObjectActivator>().Disactivate();
             }
@@ -82,57 +81,18 @@ public class ObjectPoolManager : MonoBehaviourPun
 
         return objToSpawn;
     }
+
     public GameObject SpawnFromPool(NetworkObjectPoolTag tag, Vector3 position, Quaternion rotation, ShootingMetadata shootingMetadata)
     {
         var obj = SpawnFromPool(tag, position, rotation);
         obj.GetComponent<BulletBehaviour>().InvokeShoot(shootingMetadata);
         return obj;
     }
-    private List<PhotonView> _photonViews;
-
-    private void InitListOfPhotonViewObjectsIfNotExists()
-    {
-        if (_photonViews == null)
-        {
-            _photonViews = FindObjectsOfType<PhotonView>().ToList();
-        }
-    }
-
-    [PunRPC]
-    private void EnableBulletInEnemyView(int photonViewID)
-    {
-        InitListOfPhotonViewObjectsIfNotExists();
-
-        var bullet = _photonViews.First(x => x.ViewID == photonViewID);
-        if (bullet == null)
-            Debug.LogError($"{photonViewID} is not found");
-        else
-        {
-            var bulletActivator = bullet.gameObject.GetComponent<GameObjectActivator>();
-            bulletActivator.Activate();
-
-            print($"uuuuu: {photonViewID} is found");
-        }
-    }
-
-    [PunRPC]
-    private void DisableBulletInEnemyView(int photonViewID)
-    {
-        InitListOfPhotonViewObjectsIfNotExists();
-
-        var bullet = _photonViews.First(x => x.ViewID == photonViewID);
-
-        if (bullet == null)
-            Debug.LogError("Something went wrong - can not disable bullet");
-        else
-        {
-            var bulletActivator = bullet.gameObject.GetComponent<GameObjectActivator>();
-            bulletActivator.Disactivate();
-        }
-    }
 }
 
 public enum NetworkObjectPoolTag
 {
-    Bullet
+    Bullet,
+    HealthPoint,
+    Ammo
 }

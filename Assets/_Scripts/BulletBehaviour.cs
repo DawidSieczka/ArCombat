@@ -6,16 +6,19 @@ using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviourPun, IPooledObject
 {
+    public int BulletDamage = 10;
+
     private bool isInvoked = false;
     private Vector3 _direction;
     private float _speed = 2f;
-    public int BulletDamage = 10;
+
     private Player _bulletOwner;
     private GameObjectActivator _activator;
-    private ObjectPoolManager _objectPoolManager;
+    private BulletsManager _bulletPoolManager;
+
     private void Awake()
     {
-        _objectPoolManager = FindObjectOfType<ObjectPoolManager>();
+        _bulletPoolManager = FindObjectOfType<BulletsManager>();
         _activator = GetComponent<GameObjectActivator>();
         _activator.Disactivate();
     }
@@ -39,7 +42,7 @@ public class BulletBehaviour : MonoBehaviourPun, IPooledObject
             else if (other.gameObject.CompareTag(Tag.Enemy.ToString()))
             {
                 Debug.Log($"(Damage) object that has been hit: {other.gameObject.name}, {other.gameObject.tag} | Hit with value: {BulletDamage}");
-                
+
                 var hittenPlayer = other.gameObject.GetComponent<PhotonView>();
                 hittenPlayer.RPC("GetHit", hittenPlayer.Controller, 10, _bulletOwner);
                 OnObjectDestroy();
@@ -74,7 +77,7 @@ public class BulletBehaviour : MonoBehaviourPun, IPooledObject
     public void OnObjectSpawn()
     {
         var id = photonView.ViewID;
-        _objectPoolManager.photonView.RPC("EnableBulletInEnemyView", RpcTarget.All, id);
+        _bulletPoolManager.photonView.RPC("EnableBulletInEnemyView", RpcTarget.All, id);
 
         //locally
         _activator.Activate();
@@ -83,7 +86,7 @@ public class BulletBehaviour : MonoBehaviourPun, IPooledObject
     public void OnObjectDestroy()
     {
         var id = photonView.ViewID;
-        _objectPoolManager.photonView.RPC("DisableBulletInEnemyView", RpcTarget.All, id);
+        _bulletPoolManager.photonView.RPC("DisableBulletInEnemyView", RpcTarget.All, id);
 
         //locally
         _activator.Disactivate();

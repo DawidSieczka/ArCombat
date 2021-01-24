@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Spawner : MonoBehaviourPunCallbacks
+public class PlayersSpawner : MonoBehaviourPunCallbacks
 {
     private List<SpawnPoint> SpawnPoints;
 
@@ -14,7 +14,6 @@ public class Spawner : MonoBehaviourPunCallbacks
     private GameObject Player;
 
     private const byte Spawns_Event = 5;
-    private const byte ev = 8;
 
     private void Start()
     {
@@ -72,7 +71,7 @@ public class Spawner : MonoBehaviourPunCallbacks
     public IEnumerator ExcludeSpawnPointTemporarily(SpawnPoint spawnPoint)
     {
         ExcludeSpawnPoint(spawnPoint);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         IncludeSpawnPoint(spawnPoint);
     }
 
@@ -92,9 +91,13 @@ public class Spawner : MonoBehaviourPunCallbacks
 
     public void MoveObjectToSpawner(GameObject gameObject)
     {
-        SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
-        var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count());
-        gameObject.transform.position = SpawnPoints[anySpawn].transform.position;
+        if (gameObject.GetComponent<PhotonView>().IsMine)
+        {
+            Debug.Log("AAAAAAAAAAAAAAAAAAAAAAa");
+            //SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
+            var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count());
+            gameObject.transform.position = SpawnPoints[anySpawn].transform.position;
+        }
     }
 
     private int TakeRandomSpawnPoint(int amount)
@@ -103,10 +106,10 @@ public class Spawner : MonoBehaviourPunCallbacks
         int anySpawn = 0;
         do
         {
-            Debug.Log($"Spawn Occupied: {anySpawn}, isOccupied: {SpawnPoints[anySpawn].isOccupied}");
+            Debug.Log($"Spawn: {anySpawn}, isOccupied: {SpawnPoints[anySpawn].isOccupied}");
 
             anySpawn = rand.Next(amount);
         } while (SpawnPoints[anySpawn].isOccupied);
         return anySpawn;
-    }
+    }   
 }

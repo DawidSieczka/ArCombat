@@ -133,7 +133,7 @@ public class PlayerHP : MonoBehaviourPun
         rb.useGravity = false;
         yield return new WaitForSeconds(2);
         rb.useGravity = true;
-        FindObjectOfType<Spawner>().MoveObjectToSpawner(gameObject);
+        FindObjectOfType<PlayersSpawner>().MoveObjectToSpawner(gameObject);
         SetMaxHP();
 
     }
