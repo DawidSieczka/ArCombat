@@ -25,6 +25,7 @@ public class PlayerShoot : MonoBehaviourPun
         ammoText = GameObject.FindGameObjectWithTag("AmmoInfo").GetComponent<TextMeshProUGUI>();
         _objectPoolManager = FindObjectOfType<ObjectPoolManager>();
         _shootingMetadata = new ShootingMetadata();
+        UpdateAmmoText();
     }
 
     private void Update()
@@ -73,6 +74,11 @@ public class PlayerShoot : MonoBehaviourPun
             _ammoAmount = 32;
             _gunMagazine -= 32;
         }
+    }
+    public void AddAmmo(int ammo)
+    {
+        _gunMagazine += ammo;
+        UpdateAmmoText();
     }
 
     private IEnumerator ReloadCoolDown()

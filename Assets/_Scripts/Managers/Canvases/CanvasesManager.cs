@@ -50,8 +50,8 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
         }
         Debug.Log("Connecting to master...");
         _canvasInputName.SetActive(false);
-        //PhotonNetwork.SendRate = 40;
-        //PhotonNetwork.SerializationRate
+        PhotonNetwork.SendRate = 30;
+        PhotonNetwork.SerializationRate = 10;
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.NickName = playerName;
         PhotonNetwork.GameVersion = "0.0.0";

@@ -10,7 +10,7 @@ public class BulletBehaviour : MonoBehaviourPun, IPooledObject
 
     private bool isInvoked = false;
     private Vector3 _direction;
-    private float _speed = 2f;
+    private float _speed = 10f;
 
     private Player _bulletOwner;
     private GameObjectActivator _activator;
@@ -27,7 +27,7 @@ public class BulletBehaviour : MonoBehaviourPun, IPooledObject
     {
         if (isInvoked)
         {
-            transform.Translate(_direction * Time.deltaTime * _speed);
+            transform.Translate(_direction.normalized * Time.deltaTime * _speed);
         }
     }
 
