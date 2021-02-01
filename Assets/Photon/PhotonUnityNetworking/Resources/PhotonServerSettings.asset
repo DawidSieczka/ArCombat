@@ -33,14 +33,11 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
-  - DestroySpaceship
-  - Fire
+  - DisableBulletInEnemyView
+  - EnableBulletInEnemyView
   - GetHit
   - HidePlayerModel
   - OnScoresUpdate
-  - RespawnSpaceship
-  - DisableBulletInEnemyView
-  - EnableBulletInEnemyView
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
