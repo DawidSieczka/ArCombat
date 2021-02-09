@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameObjectActivator : MonoBehaviour
 {
-    MeshRenderer _meshRenderer;
+    private MeshRenderer _meshRenderer;
+
     private void InitIfNotExists()
     {
-        if(_meshRenderer == null)
+        if (_meshRenderer == null)
         {
             _meshRenderer = GetComponent<MeshRenderer>();
         }
@@ -15,7 +14,7 @@ public class GameObjectActivator : MonoBehaviour
 
     public void Disactivate()
     {
-        InitIfNotExists();   
+        InitIfNotExists();
         _meshRenderer.enabled = false;
     }
 

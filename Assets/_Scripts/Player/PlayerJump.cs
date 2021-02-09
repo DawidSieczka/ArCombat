@@ -1,9 +1,6 @@
-﻿using ExitGames.Client.Photon;
-using Photon.Pun;
-using Photon.Realtime;
+﻿using Photon.Pun;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerJump : MonoBehaviourPun
 {
@@ -13,9 +10,9 @@ public class PlayerJump : MonoBehaviourPun
     private TouchScreen _touchScreen;
     private ParticleSystem _particle;
 
-    public float fallMultiplier;
-    public float lowJumpMultiplier;
-    public float jumpForce;
+    public float FallMultiplier;
+    public float LowJumpMultiplier;
+    public float JumpForce;
     private bool _isReadyToJump = true;
 
     private void Start()
@@ -29,7 +26,7 @@ public class PlayerJump : MonoBehaviourPun
 
     public bool IsColliding()
     {
-        if (_playerColliders._hitInfoLeft.collider == null && _playerColliders._hitInfoRight.collider == null)
+        if (_playerColliders.HitInfoLeft.collider == null && _playerColliders.HitInfoRight.collider == null)
         {
             return false;
         }
@@ -48,11 +45,10 @@ public class PlayerJump : MonoBehaviourPun
             _isReadyToJump = false;
             //transform.position += Vector3.up * jumpForce * Time.deltaTime;
 
-            _rb.AddForce(Vector3.up * jumpForce,ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
             //transform.position = transform.TransformDirection(new Vector3(transform.position.x, jumpForce, transform.position.z));
 
             StartCoroutine(JumpCoolDown());
-
         }
     }
 
@@ -61,5 +57,4 @@ public class PlayerJump : MonoBehaviourPun
         yield return new WaitForSeconds(.1f);
         _isReadyToJump = true;
     }
-
 }

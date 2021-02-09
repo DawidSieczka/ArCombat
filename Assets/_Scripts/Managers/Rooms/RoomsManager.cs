@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class RoomsManager : MonoBehaviourPunCallbacks
 {
-    public Transform _roomsContent;
-    public Transform _playersContent;
+    public Transform RoomsContent;
+    public Transform PlayersContent;
 
     [SerializeField]
     private RoomListing _roomListingPrefab;
@@ -19,7 +19,6 @@ public class RoomsManager : MonoBehaviourPunCallbacks
     private string _currentRoom;
     private List<RoomListing> _roomListings = new List<RoomListing>();
     private List<PlayerListing> _playerListings = new List<PlayerListing>();
-    private RoomInfo newCreatedRoom;
 
     private string GetNewRoomName()
     {
@@ -27,17 +26,15 @@ public class RoomsManager : MonoBehaviourPunCallbacks
         do
         {
             roomName = $"room {Random.RandomRange(0, 1000)}";
-        } while (_roomListings.Any(x=>x.RoomName == roomName));
+        } while (_roomListings.Any(x => x.RoomName == roomName));
         _currentRoom = roomName;
         return roomName;
     }
 
-
-
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.Log("Entered room");
-        PlayerListing listing = Instantiate(_playerListingPrefab, _playersContent);
+        PlayerListing listing = Instantiate(_playerListingPrefab, PlayersContent);
 
         if (listing != null)
         {
@@ -56,7 +53,7 @@ public class RoomsManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            print($"player name to remove {otherPlayer.NickName}");
+            Debug.Log($"player name to remove {otherPlayer.NickName}");
         }
     }
 
@@ -74,7 +71,7 @@ public class RoomsManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Room created");
 
-        var listing = Instantiate(_roomListingPrefab, _roomsContent);
+        var listing = Instantiate(_roomListingPrefab, RoomsContent);
         if (listing != null)
         {
             listing.RoomName = _currentRoom;
@@ -107,7 +104,7 @@ public class RoomsManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            PlayerListing listing = Instantiate(_playerListingPrefab, _playersContent);
+            PlayerListing listing = Instantiate(_playerListingPrefab, PlayersContent);
 
             if (listing != null)
             {
@@ -115,7 +112,6 @@ public class RoomsManager : MonoBehaviourPunCallbacks
                 _playerListings.Add(listing);
             }
         }
-       
     }
 
     public override void OnJoinedRoom()
@@ -131,7 +127,7 @@ public class RoomsManager : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        print("Room list update");
+        Debug.Log("Room list update");
         foreach (var roomInfo in roomList)
         {
             if (roomInfo.RemovedFromList)
@@ -145,7 +141,7 @@ public class RoomsManager : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    var roomsList = _roomsContent.GetComponentsInChildren<RoomListing>();
+                    var roomsList = RoomsContent.GetComponentsInChildren<RoomListing>();
                     bool shouldRemove = true;
                     foreach (var room in roomsList)
                     {
@@ -167,19 +163,13 @@ public class RoomsManager : MonoBehaviourPunCallbacks
                 {
                     AddNewCreatedRoomToList(roomInfo);
                 }
-                else
-                {
-
-                    print("dziwna sprawa !!!!!!!!!!!!!!!!!1");
-                    //todo
-                }
             }
         }
     }
 
     private void AddNewCreatedRoomToList(RoomInfo roomInfo)
     {
-        var listing = Instantiate(_roomListingPrefab, _roomsContent);
+        var listing = Instantiate(_roomListingPrefab, RoomsContent);
 
         if (listing != null)
         {

@@ -3,16 +3,16 @@
 public class InputHorizontalMove : MonoBehaviour
 {
     [HideInInspector]
-    public bool shouldMove;
+    public bool ShouldMove;
 
     [HideInInspector]
-    public bool isRightDirection;
+    public bool IsRightDirection;
 
     private void Update()
     {
-        if (shouldMove)
+        if (ShouldMove)
         {
-            if (isRightDirection)
+            if (IsRightDirection)
                 MoveRight();
             else
                 MoveLeft();
@@ -21,23 +21,23 @@ public class InputHorizontalMove : MonoBehaviour
 
     public void OnPointerDown(bool isRightMove)
     {
-        isRightDirection = isRightMove;
-        shouldMove = true;
+        IsRightDirection = isRightMove;
+        ShouldMove = true;
     }
 
     public void OnPointerUp()
     {
-        shouldMove = false;
-        PlayerHorizontalMovement.direction = 0;
+        ShouldMove = false;
+        PlayerHorizontalMovement.Direction = 0;
     }
 
     public void MoveLeft()
     {
-        PlayerHorizontalMovement.direction = -1;
+        PlayerHorizontalMovement.Direction = -1;
     }
 
     public void MoveRight()
     {
-        PlayerHorizontalMovement.direction = 1;
+        PlayerHorizontalMovement.Direction = 1;
     }
 }

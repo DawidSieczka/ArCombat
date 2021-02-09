@@ -13,9 +13,8 @@ public class ScoreBoard : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject _scoreBoard;
 
-    private List<PlayerScores> _playersScores = new List<PlayerScores>();
-
     private MatchRules _matchRules;
+    private List<PlayerScores> _playersScores = new List<PlayerScores>();
 
     public void Init()
     {

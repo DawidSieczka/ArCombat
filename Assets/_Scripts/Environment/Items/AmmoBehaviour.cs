@@ -1,19 +1,18 @@
 ﻿using Photon.Pun;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AmmoBehaviour : MonoBehaviourPun
 {
     public int IncreasedAmmo { get; set; } = 10;
 
-    private Collider collider;
-    private MeshRenderer meshRenderer;
+    private Collider _collider;
+    private MeshRenderer _meshRenderer;
 
     private void Awake()
     {
-        collider = GetComponent<Collider>();
-        meshRenderer = GetComponent<MeshRenderer>();
+        _collider = GetComponent<Collider>();
+        _meshRenderer = GetComponent<MeshRenderer>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,8 +32,8 @@ public class AmmoBehaviour : MonoBehaviourPun
 
     private void ComponentsEnabled(bool state)
     {
-        collider.enabled = state;
-        meshRenderer.enabled = state;
+        _collider.enabled = state;
+        _meshRenderer.enabled = state;
     }
 
     private void OnObjectSpawn()

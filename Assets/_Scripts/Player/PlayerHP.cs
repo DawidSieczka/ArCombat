@@ -107,7 +107,7 @@ public class PlayerHP : MonoBehaviourPun
             if (_hp <= 0)
             {
                 Debug.Log($"{enemy.NickName} killed {photonView.Controller.NickName}");
-                
+
                 SetPointsForDeath();
                 photonView.RPC("OnScoresUpdate", RpcTarget.All);
                 SetMinHP();
@@ -135,6 +135,5 @@ public class PlayerHP : MonoBehaviourPun
         rb.useGravity = true;
         FindObjectOfType<PlayersSpawner>().MoveObjectToSpawner(gameObject);
         SetMaxHP();
-
     }
 }

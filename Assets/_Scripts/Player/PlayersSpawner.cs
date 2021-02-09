@@ -8,16 +8,16 @@ using UnityEngine;
 
 public class PlayersSpawner : MonoBehaviourPunCallbacks
 {
-    private List<SpawnPoint> SpawnPoints;
+    private List<SpawnPoint> _spawnPoints;
 
     [SerializeField]
-    private GameObject Player;
+    private GameObject _player;
 
-    private const byte Spawns_Event = 5;
+    private const byte SPAWNS_EVENT = 5;
 
     private void Start()
     {
-        SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
+        _spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
         if (PhotonNetwork.IsMasterClient)
         {
             foreach (var player in PhotonNetwork.PlayerList)
@@ -30,10 +30,10 @@ public class PlayersSpawner : MonoBehaviourPunCallbacks
     private void SpawnPlayerInDrawedSpawnPoint(Player player)
     {
         Debug.Log($"player thats going to spawn {player.NickName}");
-        var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count());
+        var anySpawn = TakeRandomSpawnPoint(_spawnPoints.Count());
         RaiseEventOptions rso = new RaiseEventOptions { TargetActors = new int[] { player.ActorNumber } };
-        PhotonNetwork.RaiseEvent(Spawns_Event, SpawnPoints[anySpawn].transform.position, rso, SendOptions.SendReliable);
-        StartCoroutine(ExcludeSpawnPointTemporarily(SpawnPoints[anySpawn]));
+        PhotonNetwork.RaiseEvent(SPAWNS_EVENT, _spawnPoints[anySpawn].transform.position, rso, SendOptions.SendReliable);
+        StartCoroutine(ExcludeSpawnPointTemporarily(_spawnPoints[anySpawn]));
     }
 
     private void OnEnable()
@@ -48,7 +48,7 @@ public class PlayersSpawner : MonoBehaviourPunCallbacks
 
     private void OnSpawn_EventReceived(EventData data)
     {
-        if (data.Code == Spawns_Event)
+        if (data.Code == SPAWNS_EVENT)
         {
             InvokeSpawning((Vector3)data.CustomData);
         }
@@ -56,16 +56,16 @@ public class PlayersSpawner : MonoBehaviourPunCallbacks
 
     public void InvokeSpawning(Vector3 spawnPointCoordinates)
     {
-        MasterManager.NetworkInstantiate(Player, spawnPointCoordinates, Player.transform.rotation);
+        MasterManager.NetworkInstantiate(_player, spawnPointCoordinates, _player.transform.rotation);
     }
 
     public void InvokeSpawning()
     {
-        var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count());
+        var anySpawn = TakeRandomSpawnPoint(_spawnPoints.Count());
 
-        MasterManager.NetworkInstantiate(Player, SpawnPoints[anySpawn].transform.position, Player.transform.rotation);
+        MasterManager.NetworkInstantiate(_player, _spawnPoints[anySpawn].transform.position, _player.transform.rotation);
 
-        StartCoroutine(ExcludeSpawnPointTemporarily(SpawnPoints[anySpawn]));
+        StartCoroutine(ExcludeSpawnPointTemporarily(_spawnPoints[anySpawn]));
     }
 
     public IEnumerator ExcludeSpawnPointTemporarily(SpawnPoint spawnPoint)
@@ -79,24 +79,22 @@ public class PlayersSpawner : MonoBehaviourPunCallbacks
     {
         Debug.Log($"Excluded spawn point: {spawnPoint.gameObject.name}");
         spawnPoint.gameObject.SetActive(false);
-        SpawnPoints.Remove(spawnPoint);
+        _spawnPoints.Remove(spawnPoint);
     }
 
     private void IncludeSpawnPoint(SpawnPoint spawnPoint)
     {
         Debug.Log($"Included spawn point: {spawnPoint.gameObject.name}");
         spawnPoint.gameObject.SetActive(true);
-        SpawnPoints.Add(spawnPoint);
+        _spawnPoints.Add(spawnPoint);
     }
 
     public void MoveObjectToSpawner(GameObject gameObject)
     {
         if (gameObject.GetComponent<PhotonView>().IsMine)
         {
-            Debug.Log("AAAAAAAAAAAAAAAAAAAAAAa");
-            //SpawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
-            var anySpawn = TakeRandomSpawnPoint(SpawnPoints.Count());
-            gameObject.transform.position = SpawnPoints[anySpawn].transform.position;
+            var anySpawn = TakeRandomSpawnPoint(_spawnPoints.Count());
+            gameObject.transform.position = _spawnPoints[anySpawn].transform.position;
         }
     }
 
@@ -106,10 +104,10 @@ public class PlayersSpawner : MonoBehaviourPunCallbacks
         int anySpawn = 0;
         do
         {
-            Debug.Log($"Spawn: {anySpawn}, isOccupied: {SpawnPoints[anySpawn].isOccupied}");
+            Debug.Log($"Spawn: {anySpawn}, isOccupied: {_spawnPoints[anySpawn].IsOccupied}");
 
             anySpawn = rand.Next(amount);
-        } while (SpawnPoints[anySpawn].isOccupied);
+        } while (_spawnPoints[anySpawn].IsOccupied);
         return anySpawn;
-    }   
+    }
 }

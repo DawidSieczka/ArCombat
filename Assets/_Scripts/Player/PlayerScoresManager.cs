@@ -22,5 +22,4 @@ public class PlayerScoresManager : MonoBehaviourPun
         Debug.Log($"{photonView.Controller.NickName} updates scoreboard");
         _scoreBoard.UpdateScores();
     }
-
 }

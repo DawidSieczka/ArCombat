@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ObjectsSpawner : MonoBehaviour
 {
@@ -11,5 +9,4 @@ public class ObjectsSpawner : MonoBehaviour
         _objectPoolManager = GetComponent<ObjectPoolManager>();
         _objectPoolManager.SpawnFromPool(NetworkObjectPoolTag.HealthPoint, transform.position, Quaternion.identity);
     }
-    
 }

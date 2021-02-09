@@ -2,7 +2,7 @@
 
 public class SpawnPoint : MonoBehaviour
 {
-    public bool isOccupied { get; set; }
+    public bool IsOccupied { get; set; }
 
     private PlayersSpawner _spawner;
 
@@ -15,18 +15,14 @@ public class SpawnPoint : MonoBehaviour
     {
         if (other.gameObject.CompareTag(Tag.Enemy.ToString()))
         {
-            print($"Enemy detected - occupied: {other.gameObject.name}");
-            isOccupied = true;
+            Debug.Log($"Enemy detected - occupied: {other.gameObject.name}");
+            IsOccupied = true;
             StartCoroutine(_spawner.ExcludeSpawnPointTemporarily(this));
         }
-        else if (other.gameObject.CompareTag(Tag.Player.ToString()) && isOccupied)
+        else if (other.gameObject.CompareTag(Tag.Player.ToString()) && IsOccupied)
         {
-            print($"moved object to another spawner: {other.gameObject.name}");
+            Debug.Log($"Moved object to another spawner: {other.gameObject.name}");
             _spawner.MoveObjectToSpawner(other.gameObject);
-        }
-        else
-        {
-            //print($"the collded object: {other.gameObject.name}");
         }
     }
 }

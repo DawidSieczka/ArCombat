@@ -9,28 +9,27 @@ public class PlayerAim : MonoBehaviourPun
 
     private GameObject _aimingLine;
     private Vector3 _playerPos;
-    public bool isZDepthAxis = true;
-    private bool _isPointingAtTarget;
+    public bool IsZDepthAxis = true;
 
     [HideInInspector]
-    public Vector3? aimedTargetPosition;
+    public Vector3? AimedTargetPosition;
 
-    private int _layerMask = 1 << 10;
-    private RaycastHit[] hits;
     private Renderer _aimingLineShaderRenderer;
-    private SideDetector _sideDetector;
     private PlayerCameraCenter _playerCameraCenter;
     private const int _groundLayer = 11;
     private const int _spawnLayer = 13;
+
     private void Awake()
     {
-        //spawn _aimingLine
+        SpawnAimingLine();
+    }
+
+    private void SpawnAimingLine()
+    {
         if (base.photonView.IsMine)
         {
-            print($"My view id is: {base.photonView.ViewID}");
             _aimingLine = Instantiate(_aimingLinePrefab, Vector3.zero, Quaternion.identity);
             _aimingLineShaderRenderer = _aimingLine.GetComponent<Renderer>();
-            _sideDetector = GetComponent<SideDetector>();
             _playerCameraCenter = Camera.main.GetComponentInChildren<PlayerCameraCenter>();
         }
     }
@@ -38,10 +37,10 @@ public class PlayerAim : MonoBehaviourPun
     //invoked only from Player Rotation button
     public void ChangeDepthAxis()
     {
-        if (isZDepthAxis)
-            isZDepthAxis = false;
+        if (IsZDepthAxis)
+            IsZDepthAxis = false;
         else
-            isZDepthAxis = true;
+            IsZDepthAxis = true;
     }
 
     private void Update()
@@ -56,15 +55,15 @@ public class PlayerAim : MonoBehaviourPun
     private void SetAimingLine()
     {
         _playerPos = transform.position;
-        var _xAxisMiddlePoint = (aimedTargetPosition.Value.x - _playerPos.x) / 2;
-        var _zAxisMiddlePoint = (aimedTargetPosition.Value.z - _playerPos.z) / 2;
-        var _yAxisMiddlePoint = (aimedTargetPosition.Value.y - _playerPos.y) / 2;
+        var _xAxisMiddlePoint = (AimedTargetPosition.Value.x - _playerPos.x) / 2;
+        var _zAxisMiddlePoint = (AimedTargetPosition.Value.z - _playerPos.z) / 2;
+        var _yAxisMiddlePoint = (AimedTargetPosition.Value.y - _playerPos.y) / 2;
 
-        var _direction = (transform.position - aimedTargetPosition.Value);
-        var scaleY = Vector3.Distance(aimedTargetPosition.Value, _playerPos) * 0.5f;
+        var _direction = (transform.position - AimedTargetPosition.Value);
+        var scaleY = Vector3.Distance(AimedTargetPosition.Value, _playerPos) * 0.5f;
         _aimingLineShaderRenderer.material.SetFloat("_distanceScaleValue", scaleY);
 
-        if (isZDepthAxis)
+        if (IsZDepthAxis)
         {
             float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg - 90;
             _aimingLine.transform.position = new Vector3(_playerPos.x + _xAxisMiddlePoint, _playerPos.y + _yAxisMiddlePoint, _playerPos.z);
@@ -84,7 +83,7 @@ public class PlayerAim : MonoBehaviourPun
     {
         try
         {
-            _playerCameraCenter.SetDepthToPlayersPosition(isZDepthAxis, transform.position.x, transform.position.z);
+            _playerCameraCenter.SetDepthToPlayersPosition(IsZDepthAxis, transform.position.x, transform.position.z);
             var pointingDirection = _playerCameraCenter.transform.position;
 
             Vector3 raycastDirection = GetNormalizedRaycastDirection(pointingDirection);
@@ -92,30 +91,30 @@ public class PlayerAim : MonoBehaviourPun
             var rayDistance = Vector3.Distance(pointingDirection, transform.position);
             var isHit = Physics.Raycast(transform.position, raycastDirection, out RaycastHit hit, rayDistance);
 
-           
             if (isHit && isHittingCorrectObjects(hit))
             {
-                    Debug.Log($"Hitting object: {hit.collider.gameObject.name}");
+                Debug.Log($"Hitting object: {hit.collider.gameObject.name}");
 
-                aimedTargetPosition = hit.point;
+                AimedTargetPosition = hit.point;
             }
             else
             {
-               
-                aimedTargetPosition = pointingDirection;
+                AimedTargetPosition = pointingDirection;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError(ex.Message);
         }
     }
+
     private bool isHittingCorrectObjects(RaycastHit hit)
     {
         return hit.collider.gameObject.layer != _groundLayer
             && hit.collider.gameObject.tag != Tag.Bullet.ToString()
             && hit.collider.gameObject.layer != _spawnLayer;
     }
+
     private Vector3 GetNormalizedRaycastDirection(Vector3 pointingDirection)
     {
         var x = pointingDirection.x - transform.position.x;

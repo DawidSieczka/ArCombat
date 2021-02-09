@@ -69,11 +69,6 @@ public class BulletBehaviour : MonoBehaviourPun, IPooledObject
         OnObjectDestroy();
     }
 
-    private void OnEnable()
-    {
-        //StartCoroutine(check());
-    }
-
     public void OnObjectSpawn()
     {
         var id = photonView.ViewID;

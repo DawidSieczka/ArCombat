@@ -2,24 +2,23 @@
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class ObjectPoolManager : MonoBehaviourPun
 {
     #region Singleton
 
-    public static ObjectPoolManager instance;
+    public static ObjectPoolManager Instance;
 
     private void Awake()
     {
-        if (instance != this && instance != null)
+        if (Instance != this && Instance != null)
         {
             Destroy(this.gameObject);
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
     }
 
@@ -29,31 +28,31 @@ public class ObjectPoolManager : MonoBehaviourPun
     public class Pools
     {
         [Header("Enum NetworkObjectPoolTag")]
-        public NetworkObjectPoolTag tag;
+        public NetworkObjectPoolTag Tag;
 
-        public GameObject prefab;
-        public int size;
+        public GameObject Prefab;
+        public int Size;
     }
 
-    public List<Pools> pools;
+    public List<Pools> PoolsCollection;
     private Dictionary<NetworkObjectPoolTag, Queue<GameObject>> _poolDictionary;
 
     private void Start()
     {
         _poolDictionary = new Dictionary<NetworkObjectPoolTag, Queue<GameObject>>();
-        foreach (var pool in pools)
+        foreach (var pool in PoolsCollection)
         {
             Queue<GameObject> poolQueue = new Queue<GameObject>();
 
-            for (int i = 0; i < pool.size; i++)
+            for (int i = 0; i < pool.Size; i++)
             {
-                var spawnedObject = MasterManager.NetworkInstantiate(pool.prefab, transform.position, Quaternion.identity);
-                
+                var spawnedObject = MasterManager.NetworkInstantiate(pool.Prefab, transform.position, Quaternion.identity);
+
                 poolQueue.Enqueue(spawnedObject);
                 spawnedObject.GetComponent<GameObjectActivator>().Disactivate();
             }
 
-            _poolDictionary.Add(pool.tag, poolQueue);
+            _poolDictionary.Add(pool.Tag, poolQueue);
         }
     }
 

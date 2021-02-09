@@ -6,10 +6,10 @@ using UnityEngine;
 public class MatchRules : MonoBehaviour
 {
     [SerializeField]
-    private GameObject WonPanel;
+    private GameObject _wonPanel;
     public void EnableWonScreen(string winnerName)
     {
-        WonPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"Player {winnerName} won the match!";
-        WonPanel.SetActive(true);
+        _wonPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"Player {winnerName} won the match!";
+        _wonPanel.SetActive(true);
     }
 }

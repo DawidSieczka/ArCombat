@@ -6,28 +6,27 @@ public class PlayerScores : MonoBehaviour
     public int PlayerID { get; set; }
 
     [SerializeField]
-    private TextMeshProUGUI KillsTxt;
+    private TextMeshProUGUI _killsTxt;
 
     [SerializeField]
-    private TextMeshProUGUI DeathsTxt;
+    private TextMeshProUGUI _deathsTxt;
 
     [SerializeField]
-    private TextMeshProUGUI PlayerNameTxt;
+    private TextMeshProUGUI _playerNameTxt;
 
     public int Kills = 0;
     public int Deaths = 0;
 
     public void SetPlayerNameInLabel(string playerName)
     {
-        PlayerNameTxt.text = playerName;
-
+        _playerNameTxt.text = playerName;
     }
 
     public void UpdateScoresDisplay(int kills, int deaths)
     {
         Kills = kills;
         Deaths = deaths;
-        KillsTxt.text = kills.ToString();
-        DeathsTxt.text = deaths.ToString();
+        _killsTxt.text = kills.ToString();
+        _deathsTxt.text = deaths.ToString();
     }
 }

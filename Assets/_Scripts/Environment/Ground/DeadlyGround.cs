@@ -3,7 +3,6 @@
 public class DeadlyGround : MonoBehaviour
 {
     private GameObject _player;
-    private bool isPlayerBelowGround;
 
     private void OnTriggerEnter(Collider other)
     {

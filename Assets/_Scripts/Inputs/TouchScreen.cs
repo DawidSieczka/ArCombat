@@ -1,43 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 public class TouchScreen : MonoBehaviour
 {
     private Vector2 _startTouch;
     private Vector2 _currentTouch;
-    private PlayerHorizontalMovement playerMovement;
-    
-    public TMPro.TextMeshProUGUI starttext;
-    public TMPro.TextMeshProUGUI curenttext;
-    public TMPro.TextMeshProUGUI angletext;
-    public TMPro.TextMeshProUGUI distancetext;
+    private PlayerHorizontalMovement _playerMovement;
 
     [HideInInspector]
     public UnityEvent OnJumped;
-    
+
     public void GetPlayerHorizontalMovement(GameObject player)
     {
-        playerMovement = player.GetComponent<PlayerHorizontalMovement>();
+        _playerMovement = player.GetComponent<PlayerHorizontalMovement>();
     }
-    void Update()
+
+    private void Update()
     {
-        if (playerMovement == null)
+        if (_playerMovement == null)
         {
             Debug.LogWarning("Player Horizontal Movement is not attached yet.");
             return;
         }
 
-        if (!MenuOption.isMenuOptionOpen)
+        if (!MenuOption.IsMenuOptionOpen)
         {
             SetTouchPositions();
 
 #if UNITY_EDITOR
-            
             var horizontalInput = Input.GetAxisRaw("Horizontal");
             MoveHorizontal(horizontalInput * 4);
-            
+
             if (Input.GetKeyDown(KeyCode.Space))
                 Jump();
 #endif
@@ -46,7 +39,7 @@ public class TouchScreen : MonoBehaviour
 
     private void CalculateAngle()
     {
-        var touchVectorDifference =  _currentTouch - _startTouch;
+        var touchVectorDifference = _currentTouch - _startTouch;
         var xDistance = _currentTouch.x - _startTouch.x;
         var yDistance = _currentTouch.y - _startTouch.y;
         var angle = Mathf.Atan2(touchVectorDifference.x, touchVectorDifference.y) * Mathf.Rad2Deg;
@@ -54,37 +47,28 @@ public class TouchScreen : MonoBehaviour
         {
             angle *= -1;
         }
-        
-        angletext.text = angle.ToString();
-        distancetext.text = yDistance.ToString();
+
         InvokeActionBasedOnAnglesRules(angle, xDistance, yDistance);
     }
-    
-    private void InvokeActionBasedOnAnglesRules(float angle,float xDistance, float yDistance)
+
+    private void InvokeActionBasedOnAnglesRules(float angle, float xDistance, float yDistance)
     {
         var minSlide = 40;
         var isXMinTouchDistance = Mathf.Abs(xDistance) > minSlide;
         var isYMinTouchDistance = Mathf.Abs(yDistance) > minSlide;
 
-        if (angle < 20 && isYMinTouchDistance)//+ distance
+        if (angle < 20 && isYMinTouchDistance)
         {
             Jump();
         }
-        else if(angle > 20 && angle < 60 && isXMinTouchDistance)//+ distance
+        else if (angle > 20 && angle < 60 && isXMinTouchDistance)
         {
-            //go jump and right or left
             MoveHorizontal(xDistance, minSlide);
             Jump();
         }
-        else if(angle > 60 && angle < 125 && isXMinTouchDistance)
+        else if (angle > 60 && angle < 125 && isXMinTouchDistance)
         {
-            //go right or left
             MoveHorizontal(xDistance, minSlide);
-        }
-        else
-        {
-            //postac kuca ? cos mozna tu ustawić tj zmiana broni albo rzut granatem ...
-            // ?????
         }
     }
 
@@ -93,11 +77,13 @@ public class TouchScreen : MonoBehaviour
     {
         OnJumped.Invoke();
     }
+
     private void MoveHorizontal(float input)
     {
         //used in debug
-        playerMovement.Move(input);
+        _playerMovement.Move(input);
     }
+
     private void MoveHorizontal(float xDistance, int minSlide)
     {
         var direction = 0;
@@ -107,26 +93,23 @@ public class TouchScreen : MonoBehaviour
             direction = 1;
 
         if (Mathf.Abs(xDistance) > (minSlide * 2))
-            playerMovement.Move(direction * 2);
+            _playerMovement.Move(direction * 2);
         else
-            playerMovement.Move(direction);
+            _playerMovement.Move(direction);
     }
 
     private void SetTouchPositions()
     {
-        //sprawdz czy dotkniec jest więcej niż 0. (czyli po prostu czy dotknięto ekran) 
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
-            //pobierz miejsce pierwszego dotkniecia
             if (touch.phase == TouchPhase.Began)
             {
                 _startTouch = touch.position;
                 return;
             }
 
-            //Pobieraj (co klatkę) miejsce poruszonego palca.
             if (touch.phase == TouchPhase.Moved)
             {
                 _currentTouch = touch.position;

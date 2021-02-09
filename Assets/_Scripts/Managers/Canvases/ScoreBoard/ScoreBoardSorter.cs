@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class ScoreBoardSorter : MonoBehaviour
@@ -14,5 +12,4 @@ public class ScoreBoardSorter : MonoBehaviour
             scores[i].transform.SetSiblingIndex(i);
         }
     }
-
 }

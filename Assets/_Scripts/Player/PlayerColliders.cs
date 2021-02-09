@@ -1,32 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerColliders : MonoBehaviour{
+public class PlayerColliders : MonoBehaviour
+{
     [HideInInspector]
     public bool IsOnEdge;
 
-    public float arraySpacingFromMiddlePoint = 0.15f;
-    int _layerMaskGround = 1 << 8;
+    public float ArraySpacingFromMiddlePoint = 0.15f;
+    private int _layerMaskGround = 1 << 8;
 
     [HideInInspector]
-    public RaycastHit _hitInfoLeft;
-    [HideInInspector]
-    public RaycastHit _hitInfoRight;
+    public RaycastHit HitInfoLeft;
 
-    void Update(){ 
-        Debug.DrawRay(transform.position,Vector3.forward/4,Color.red);
+    [HideInInspector]
+    public RaycastHit HitInfoRight;
+
+    private void Update()
+    {
+        Debug.DrawRay(transform.position, Vector3.forward / 4, Color.red);
         CheckPlayerOnPlatform();
     }
 
-    void CheckPlayerOnPlatform(){
-        var hitGround1 = Physics.Raycast(transform.localPosition + new Vector3(-arraySpacingFromMiddlePoint, 0, 0), Vector3.down,
-            out _hitInfoLeft, 1.1f, _layerMaskGround);
-        var hitGround2 = Physics.Raycast(transform.localPosition + new Vector3(arraySpacingFromMiddlePoint, 0, 0), Vector3.down,
-            out _hitInfoRight, 1.1f, _layerMaskGround);
+    private void CheckPlayerOnPlatform()
+    {
+        var hitGround1 = Physics.Raycast(transform.localPosition + new Vector3(-ArraySpacingFromMiddlePoint, 0, 0), Vector3.down,
+            out HitInfoLeft, 1.1f, _layerMaskGround);
+        var hitGround2 = Physics.Raycast(transform.localPosition + new Vector3(ArraySpacingFromMiddlePoint, 0, 0), Vector3.down,
+            out HitInfoRight, 1.1f, _layerMaskGround);
 
-        Debug.DrawRay(transform.localPosition + new Vector3(-arraySpacingFromMiddlePoint, 0, 0), Vector3.down * 1.1f, Color.red);
-        Debug.DrawRay(transform.localPosition + new Vector3(arraySpacingFromMiddlePoint, 0, 0), Vector3.down * 1.1f, Color.red);
-
+        Debug.DrawRay(transform.localPosition + new Vector3(-ArraySpacingFromMiddlePoint, 0, 0), Vector3.down * 1.1f, Color.red);
+        Debug.DrawRay(transform.localPosition + new Vector3(ArraySpacingFromMiddlePoint, 0, 0), Vector3.down * 1.1f, Color.red);
     }
 }

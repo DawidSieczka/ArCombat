@@ -8,7 +8,6 @@ public class BulletsManager : MonoBehaviourPun
 {
     private List<PhotonView> _photonViews;
 
-
     [PunRPC]
     private void EnableBulletInEnemyView(int photonViewID)
     {

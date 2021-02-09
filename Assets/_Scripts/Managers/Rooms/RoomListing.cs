@@ -1,39 +1,30 @@
 ﻿using Photon.Pun;
-using Photon.Realtime;
 using System;
-using System.Linq;
 using UnityEngine;
 
 public class RoomListing : MonoBehaviour
 {
-    
-    private string roomName;
+    private string _roomName;
 
     public string RoomName
     {
-        get { return roomName; }
-        set 
+        get { return _roomName; }
+        set
         {
-            if (text != null)
-                text.text = value;
-            roomName = value; 
+            if (_text != null)
+                _text.text = value;
+            _roomName = value;
         }
-
     }
 
     public int RoomCount { get; set; }
-    private TMPro.TextMeshProUGUI text;
+    private TMPro.TextMeshProUGUI _text;
+
     private void Awake()
     {
-        RoomCount = GetPlayersCount(roomName);
-        text = GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        RoomCount = GetPlayersCount(_roomName);
+        _text = GetComponentInChildren<TMPro.TextMeshProUGUI>();
     }
-
-    //public void SetRoomName(string name)
-    //{
-    //    RoomName = name;
-    //    text.text = name;
-    //}
 
     public void Destroy()
     {
@@ -52,8 +43,6 @@ public class RoomListing : MonoBehaviour
             {
                 throw new Exception("Photon Network is not ready to work...");
             }
-            //TODO
-            //Get count of this room !
         }
         catch (Exception ex)
         {
@@ -66,6 +55,6 @@ public class RoomListing : MonoBehaviour
 
     public void OnClick_JoinRoom()
     {
-        PhotonNetwork.JoinRoom(roomName);
+        PhotonNetwork.JoinRoom(_roomName);
     }
 }

@@ -4,20 +4,14 @@ using UnityEngine;
 
 public class PlayerRotation : MonoBehaviour
 {
-    //1. obracając postać można obrócić ją o 90 stopni w jakim kolwiek kierunku
-    //2. za to w sterowaniu musi byc uwzglednione to ze postac idzie zawsze w kierunku w którym się (klika input/przesuwa joystick)
-    //3. tzn. postac zwrócona twarzą do północy porusza się po osi wschód zachód i kamera jest umieszczona na kierunku północnym dla postaci.
-    // Teraz, gdy postać porusza się na wschód gdy naciskamy prawy klawisz. Kamera przechodzi na południe i gdy naciskamy prawy klawisz postać porusza się na zachód.
-    // powoduje to że postać porusza się względem przesunięcia joysticka czy też wciśnięcia L/P inputu
-
     private PlayerPositionCorrector _posCorrector;
     private PlayerAim _playerAim;
     private ButtonEvent _buttonEvent;
     private SideDetector _sideDetector;
-    private bool shouldRotate;
-    private float startRotationPos;
-    private float endRotationPos;
-    public float rotationSpeed;
+    private bool _shouldRotate;
+    private float _startRotationPos;
+    private float _endRotationPos;
+    public float RotationSpeed;
 
     private void Start()
     {
@@ -30,27 +24,26 @@ public class PlayerRotation : MonoBehaviour
 
     private void Update()
     {
-        if (shouldRotate)
+        if (_shouldRotate)
         {
-            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
-            //Debug.Log($"Y euler: {transform.eulerAngles.y}");
+            transform.Rotate(Vector3.up, RotationSpeed * Time.deltaTime);
 
-            if (Math.Abs(transform.eulerAngles.y - endRotationPos) < 3f)
+            if (Math.Abs(transform.eulerAngles.y - _endRotationPos) < 3f)
             {
-                shouldRotate = false;
-                transform.eulerAngles = new Vector3(transform.eulerAngles.x, endRotationPos, transform.eulerAngles.z);
+                _shouldRotate = false;
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, _endRotationPos, transform.eulerAngles.z);
             }
         }
     }
 
     private void InvokeRotation()
     {
-        if (!shouldRotate) //You can click Invoke only when player is not rotating
+        if (!_shouldRotate) //You can click Invoke only when player is not rotating
         {
-            shouldRotate = true;
-            startRotationPos = transform.rotation.eulerAngles.y;
-            var targetAngle = (float)startRotationPos + 90;
-            endRotationPos = RoundValueToCorrectAngle(targetAngle);
+            _shouldRotate = true;
+            _startRotationPos = transform.rotation.eulerAngles.y;
+            var targetAngle = (float)_startRotationPos + 90;
+            _endRotationPos = RoundValueToCorrectAngle(targetAngle);
             _posCorrector.CorrectPosition();
             _playerAim.ChangeDepthAxis();
             _sideDetector.ChangeDepthAxis();

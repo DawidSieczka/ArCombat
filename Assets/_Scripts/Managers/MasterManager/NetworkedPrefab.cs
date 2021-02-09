@@ -1,18 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class NetworkedPrefab
 {
     public GameObject Prefab;
     public string Path;
-    string _resourcesDirectory = "resources";
+
+    private string _resourcesDirectory = "resources";
+
     public NetworkedPrefab(GameObject obj, string path)
     {
         Prefab = obj;
         Path = GetCorrectedPrefabPath(path);
     }
+
     public string GetCorrectedPrefabPath(string basePath)
     {
         int extensionLength = System.IO.Path.GetExtension(basePath).Length;

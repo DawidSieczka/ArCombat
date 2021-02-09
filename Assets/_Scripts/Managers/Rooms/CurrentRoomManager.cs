@@ -1,21 +1,20 @@
 ﻿using Photon.Pun;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CurrentRoomManager : MonoBehaviourPunCallbacks
 {
-    int sceneArenaId = 1;
-    int sceneMenuId = 0;
+    private int _sceneArenaId = 1;
+    private int _sceneMenuId = 0;
+
     public void OnClick_StartPlaying()
     {
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.CurrentRoom.IsVisible = false;
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.LoadLevel(sceneArenaId);
+            PhotonNetwork.LoadLevel(_sceneArenaId);
         }
     }
 
@@ -25,7 +24,7 @@ public class CurrentRoomManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LeaveRoom();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError($"2 Leaving room error catched: {ex.Message}");
         }
@@ -37,7 +36,7 @@ public class CurrentRoomManager : MonoBehaviourPunCallbacks
         {
             if (SceneManager.GetActiveScene().buildIndex == 1)
             {
-                SceneManager.LoadScene(sceneMenuId);
+                SceneManager.LoadScene(_sceneMenuId);
             }
         }
         catch (Exception ex)
@@ -47,5 +46,4 @@ public class CurrentRoomManager : MonoBehaviourPunCallbacks
 
         base.OnLeftRoom();
     }
-
 }

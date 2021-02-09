@@ -22,8 +22,6 @@ public class CanvasesManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject _canvasInputName;
 
-
-
     private void Awake()
     {
         _createRoomButton.SetActive(false);

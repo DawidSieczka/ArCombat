@@ -8,7 +8,7 @@ public class PlayerDistinction : MonoBehaviourPun
     {
         var playerColor = Color.green;
         var enemyColor = Color.red;
-     
+
         if (base.photonView.IsMine)
         {
             transform.tag = Tag.Player.ToString();
