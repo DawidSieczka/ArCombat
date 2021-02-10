@@ -106,7 +106,7 @@ public class PlayersSpawner : MonoBehaviourPunCallbacks
         {
             Debug.Log($"Spawn: {anySpawn}, isOccupied: {_spawnPoints[anySpawn].IsOccupied}");
 
-            anySpawn = rand.Next(amount);
+            anySpawn = rand.Next(amount-1);
         } while (_spawnPoints[anySpawn].IsOccupied);
         return anySpawn;
     }

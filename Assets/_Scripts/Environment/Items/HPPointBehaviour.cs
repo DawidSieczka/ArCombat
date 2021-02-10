@@ -1,17 +1,17 @@
 ﻿using Photon.Pun;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HPPointBehaviour : MonoBehaviourPun
 {
     public int IncreasedHP { get; set; } = 25;
     private Collider _collider;
-    private MeshRenderer _meshRenderer;
+    public List<MeshRenderer> MeshRenderer;
 
     private void Awake()
     {
         _collider = GetComponent<Collider>();
-        _meshRenderer = GetComponent<MeshRenderer>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,7 +32,7 @@ public class HPPointBehaviour : MonoBehaviourPun
     private void ComponentsEnabled(bool state)
     {
         _collider.enabled = state;
-        _meshRenderer.enabled = state;
+        MeshRenderer.ForEach(x => x.enabled = state);
     }
 
     private void OnObjectSpawn()

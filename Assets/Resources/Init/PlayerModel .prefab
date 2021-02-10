@@ -575,7 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d651acc2ff6d7409408e67cdb7699a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 7111062780357206846, guid: 588c7abb2387a8246881fc97d8d14b1b, type: 3}
+  Bullet: {fileID: 7111062780357206846, guid: 588c7abb2387a8246881fc97d8d14b1b, type: 3}
 --- !u!114 &1063436536708367068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,9 +588,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f419d307db3004b88925ad8f0b6469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedMultiplayer: 2
-  ARcam: {fileID: 0}
-  LerpConstant: 0
+  SpeedMultiplayer: 2
+  ArCam: {fileID: 0}
+  _lerpConstant: 0
 --- !u!114 &1063436536708367067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,9 +603,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4835a2c5156e9634883a9388a1eb6a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallMultiplier: 6
-  lowJumpMultiplier: 2.6
-  jumpForce: 100
+  FallMultiplier: 6
+  LowJumpMultiplier: 2.5
+  JumpForce: 100
 --- !u!114 &1063436536708367066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,7 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsOnEdge: 0
-  arraySpacingFromMiddlePoint: 0.15
+  ArraySpacingFromMiddlePoint: 0.15
 --- !u!114 &1063436536708367064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,7 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37dfbb33f47581b4caef1fb91acc2f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 180
+  RotationSpeed: 180
 --- !u!114 &1063436536708367063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,7 +661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _aimingLinePrefab: {fileID: 5443357051375081679, guid: 73dfb8a34872e6e4aafa837c3a77dd13,
     type: 3}
-  isZDepthAxis: 1
+  IsZDepthAxis: 1
 --- !u!114 &1063436536708367062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -782,7 +782,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1063436536708367061}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ca59af3f596f924383918a013276471, type: 3}
+  m_Script: {fileID: 11500000, guid: b05acd9f7a57fa742a9add6155eea54c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &636844432775417667
