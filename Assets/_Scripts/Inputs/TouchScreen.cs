@@ -9,7 +9,7 @@ public class TouchScreen : MonoBehaviour
 
     [HideInInspector]
     public UnityEvent OnJumped;
-
+    private Character_Animator _animator;
     public void GetPlayerHorizontalMovement(GameObject player)
     {
         _playerMovement = player.GetComponent<PlayerHorizontalMovement>();
@@ -30,9 +30,12 @@ public class TouchScreen : MonoBehaviour
 #if UNITY_EDITOR
             var horizontalInput = Input.GetAxisRaw("Horizontal");
             MoveHorizontal(horizontalInput * 4);
-
+            //Anim Horizontal 
             if (Input.GetKeyDown(KeyCode.Space))
+            {
+             //Anim Jump
                 Jump();
+            }
 #endif
         }
     }
@@ -60,15 +63,19 @@ public class TouchScreen : MonoBehaviour
         if (angle < 20 && isYMinTouchDistance)
         {
             Jump();
+            //Anim Jump
         }
         else if (angle > 20 && angle < 60 && isXMinTouchDistance)
         {
             MoveHorizontal(xDistance, minSlide);
             Jump();
+            //Anim Jump
         }
         else if (angle > 60 && angle < 125 && isXMinTouchDistance)
         {
             MoveHorizontal(xDistance, minSlide);
+            
+
         }
     }
 
@@ -120,6 +127,13 @@ public class TouchScreen : MonoBehaviour
         {
             _startTouch = Vector2.zero;
             _currentTouch = Vector2.zero;
+            //Turn Off animation
         }
     }
+    public void InitCharacterAnimator()
+    {
+        _animator = GameObject.FindGameObjectWithTag(Tag.Player.ToString()).GetComponentInChildren<Character_Animator>();
+      
+    }
+    
 }

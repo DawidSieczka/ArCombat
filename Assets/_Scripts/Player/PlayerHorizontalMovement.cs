@@ -10,10 +10,12 @@ public class PlayerHorizontalMovement : MonoBehaviourPun
     private Rigidbody _rb;
 
     [SerializeField] [Range(0, 1)] private float _lerpConstant;
+    
 
     private void Start()
     {
         InitIfDoesNotExist();
+
     }
 
     private void InitIfDoesNotExist()
