@@ -1,55 +1,11 @@
-﻿using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class AmmoBehaviour : MonoBehaviourPun
+public class AmmoBehaviour : AbstractItem
 {
     public int IncreasedAmmo { get; set; } = 10;
 
-    private Collider _collider;
-    public List<MeshRenderer> MeshRenderer;
-
-    private void Awake()
+    public override void InvokeActionOnPlayer(Collider other)
     {
-        _collider = GetComponent<Collider>();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag(Tag.Player.ToString()) || other.gameObject.CompareTag(Tag.Enemy.ToString()))
-        {
-            if (other.gameObject.CompareTag(Tag.Player.ToString()))
-                other.GetComponent<PlayerShoot>().AddAmmo(IncreasedAmmo);
-
-            OnObjectDestroy();
-        }
-        else if (other.gameObject.CompareTag(Tag.Bullet.ToString()))
-        {
-            OnObjectDestroy();
-        }
-    }
-
-    private void ComponentsEnabled(bool state)
-    {
-        _collider.enabled = state;
-        MeshRenderer.ForEach(x => x.enabled = state);
-    }
-
-    private void OnObjectSpawn()
-    {
-        ComponentsEnabled(true);
-    }
-
-    private void OnObjectDestroy()
-    {
-        ComponentsEnabled(false);
-        StartCoroutine(SpawnObjectAfterTime());
-    }
-
-    private IEnumerator SpawnObjectAfterTime()
-    {
-        yield return new WaitForSeconds(10f);
-        OnObjectSpawn();
+        other.GetComponent<PlayerShoot>().AddAmmo(IncreasedAmmo);
     }
 }
