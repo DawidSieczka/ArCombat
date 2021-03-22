@@ -36,13 +36,15 @@ public class PlayerHP : MonoBehaviourPun
             if (_hp < 100)
             {
                 _hp += health;
-                var percentageOfHealth = ((float)health / 100);
-                _hpBar.transform.localScale += new Vector3(percentageOfHealth, 0, 0);
+                if (_hp >= 100)
+                {
+                    SetMaxHP();
+                }
+
+                var percentageOfHealth = ((float)_hp / 100);
+                _hpBar.transform.localScale = new Vector3(percentageOfHealth, 1, 1);
             }
-            if (_hp >= 100)
-            {
-                SetMaxHP();
-            }
+            
         }
     }
 

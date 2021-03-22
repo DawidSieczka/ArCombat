@@ -41785,7 +41785,7 @@ GameObject:
   - component: {fileID: 1233633691}
   - component: {fileID: 3699996219638762817}
   m_Layer: 13
-  m_Name: 1
+  m_Name: SpawnPoint 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42425,12 +42425,12 @@ GameObject:
   - component: {fileID: 1269820020}
   - component: {fileID: 3699996219638762814}
   m_Layer: 13
-  m_Name: 4
+  m_Name: SpawnPoint 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1269820019
 Transform:
   m_ObjectHideFlags: 0
@@ -43354,12 +43354,12 @@ GameObject:
   - component: {fileID: 1342238167}
   - component: {fileID: 3699996219638762812}
   m_Layer: 13
-  m_Name: 6
+  m_Name: SpawnPoint 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1342238166
 Transform:
   m_ObjectHideFlags: 0
@@ -61939,12 +61939,12 @@ GameObject:
   - component: {fileID: 1823369431}
   - component: {fileID: 3699996219638762813}
   m_Layer: 13
-  m_Name: 5
+  m_Name: SpawnPoint 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1823369430
 Transform:
   m_ObjectHideFlags: 0
@@ -62395,7 +62395,7 @@ GameObject:
   - component: {fileID: 1870166135}
   - component: {fileID: 3699996219638762816}
   m_Layer: 13
-  m_Name: 2
+  m_Name: SpawnPoint 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63037,12 +63037,12 @@ GameObject:
   - component: {fileID: 1906256908}
   - component: {fileID: 3699996219638762815}
   m_Layer: 13
-  m_Name: 3
+  m_Name: SpawnPoint 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1906256907
 Transform:
   m_ObjectHideFlags: 0

@@ -52,7 +52,7 @@ public class PlayerRotation : MonoBehaviour
 
     public float RoundValueToCorrectAngle(float inputValue)
     {
-        List<float> CorrectValues = new List<float> { 0, 90, 180, 270, 360 };
+        List<float> correctValues = new List<float> { 0, 90, 180, 270, 360 };
         print(inputValue);
         float roundedAngle = 0;
 
@@ -60,7 +60,7 @@ public class PlayerRotation : MonoBehaviour
             return roundedAngle;
 
         float theSmallestDifeerence = float.MaxValue;
-        foreach (var correctValue in CorrectValues)
+        foreach (var correctValue in correctValues)
         {
             var difference = Math.Abs(inputValue - correctValue);
 
